@@ -15,6 +15,7 @@ namespace TasksManagerServer
         public Form1()
         {
             InitializeComponent();
+            
         }
     }
 }

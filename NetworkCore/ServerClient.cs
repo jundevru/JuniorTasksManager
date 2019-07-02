@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,12 +11,22 @@ namespace NetworkCore
         private Socket                  _clientSocket;
         private Action<ServerClient>    _disconnectDelegate;
         private Action<byte[]>          _sendToAllDelegate;
+        private Func<string, bool>      _setNameDelegate;
+        private string                  userName;
+        public  string                  UserName                =>      userName;
 
-        public ServerClient(Socket socket, Action<ServerClient> disconnectDelegate, Action<byte[]> sendToAllDelegate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socket">Сокет клиента</param>
+        /// <param name="disconnectDelegate">делегат, вызывающийся при закрытии соединения</param>
+        /// <param name="sendToAllDelegate">делегат, пересылки пакета всем клиентам</param>
+        public ServerClient(Socket socket, Action<ServerClient> disconnectDelegate, Action<byte[]> sendToAllDelegate, Func<string,bool> setNameDelegate)
         {
             _clientSocket = socket;
             _disconnectDelegate = disconnectDelegate;
             _sendToAllDelegate = sendToAllDelegate;
+            _setNameDelegate = setNameDelegate;
             _clientThread = new Thread(Listen);
             _clientThread.IsBackground = true;
             _clientThread.Start();
@@ -47,7 +55,23 @@ namespace NetworkCore
         /// <param name="recevedData"></param>
         private void ReceiveCommand(byte[] recevedData)
         {
-            //ITransmittedObject command = Utilits.DeserializeFromByte<ITransmittedObject>(recevedData);
+            ITransmittedObject command = Utilits.DeserializeFromByte<ITransmittedObject>(recevedData);
+            if (command is NetworkAuthTransmitted)
+            {
+                string name = (command as NetworkAuthTransmitted).name;
+                byte[] data;
+                if (_setNameDelegate.Invoke(name))
+                {
+                    userName = name;
+                    data = recevedData;
+                }
+                else
+                {
+                    data = Utilits.SerializeToBytes(new NetworkAuthTransmitted("error"));
+                }
+                SendData(data);
+                return;
+            }
             _sendToAllDelegate.Invoke(recevedData);
         }
 

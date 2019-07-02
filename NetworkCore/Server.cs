@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
@@ -33,7 +31,7 @@ namespace NetworkCore
         public void TryStop()
         {
             _tryStop = false;
-            Client client = new Client("127.0.0.1", _mainPort, (data) => { });
+            Client client = new Client("127.0.0.1", _mainPort, (res)=> { }, (o) => { });
             client.Connect();
             client.Disconnect();
         }
@@ -49,15 +47,18 @@ namespace NetworkCore
                 while (_tryStop)
                 {
                     Socket clientSocket = _mainSocket.Accept();
-                    clients.Add(new ServerClient(clientSocket, (s)=>
+                    clients.Add(new ServerClient(clientSocket, (disconnectedClient)=>
                     {
-                        if (clients.Contains(s))
-                            clients.Remove(s);
+                        if (clients.Contains(disconnectedClient))
+                            clients.Remove(disconnectedClient);
                     },
-                    (d)=> 
+                    (sendedToAllData)=> 
                     {
                         foreach (ServerClient client in clients)
-                            client.SendData(d);
+                            client.SendData(sendedToAllData);
+                    },
+                    (userName)=> {
+                        return clients.FirstOrDefault(c => c.UserName == userName) == null;
                     }));
                 }
                 _mainSocket.Shutdown(SocketShutdown.Both);

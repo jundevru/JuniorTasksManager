@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Net.Sockets;
@@ -17,10 +15,20 @@ namespace NetworkCore
         private int                         _serverPort;
         private Action<string>              _errorsDelegate;
         private Action<ITransmittedObject>  _receiveDelegate;
+        private Action<bool>                _authResultDelegate;
         private bool                        connected           =   false;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ip">адрес удаленного сервера</param>
+        /// <param name="port">порт удаленного сервера</param>
+        /// <param name="receiveDataDelegate">делегат, возвращающий полученный обьект ITransmittedObject</param>
+        /// <param name="errorsInfoDelegate">делегат, возвращающий текст ошибки</param>
         public Client(string ip, int port, 
-            Action<ITransmittedObject> receiveDataDelegate, 
+            Action<bool> authResultDelegate,
+            Action<ITransmittedObject> receiveObjectDelegate, 
             Action<string> errorsInfoDelegate = null)
         {
             _serverIP = ip;
@@ -28,8 +36,14 @@ namespace NetworkCore
             if (_serverPort == 0)
                 _serverPort = Utilits.DefaultPort;
             _errorsDelegate = errorsInfoDelegate;
+            _receiveDelegate = receiveObjectDelegate;
+            _authResultDelegate = authResultDelegate;
         }
 
+        /// <summary>
+        /// Подключиться к серверу
+        /// </summary>
+        /// <returns></returns>
         public bool Connect()
         {
             if (connected)
@@ -55,6 +69,10 @@ namespace NetworkCore
             return true;
         }
 
+        /// <summary>
+        /// Отключиться от сервера
+        /// </summary>
+        /// <returns></returns>
         public bool Disconnect()
         {
             if (!connected)
@@ -65,6 +83,36 @@ namespace NetworkCore
             connected = false;
             _clientSocket.Shutdown(SocketShutdown.Both);
             _clientSocket.Close();
+            return true;
+        }
+
+        /// <summary>
+        /// Передача объекта по сети, всем клиентам
+        /// </summary>
+        /// <param name="obj">Объект ITransmittedObject</param>
+        /// <returns></returns>
+        public bool SendObjectToAll(ITransmittedObject obj)
+        {
+            if (!connected)
+                return false;
+            byte[] data = Utilits.SerializeToBytes<ITransmittedObject>(obj);
+            SendData(data);
+            return true;
+        }
+        
+
+
+        /// <summary>
+        /// Попытка авторизации на сервере с именем
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool SendAuth(string name)
+        {
+            if (!connected)
+                return false;
+            byte[] data = Utilits.SerializeToBytes(new NetworkAuthTransmitted(name));
+            SendData(data);
             return true;
         }
 
@@ -82,13 +130,15 @@ namespace NetworkCore
             Disconnect();
         }
 
-        /// <summary>
-        /// Разбор полученной команды от сервера
-        /// </summary>
-        /// <param name="recevedData"></param>
         private void ReceiveCommand(byte[] recevedData)
         {
             ITransmittedObject command = Utilits.DeserializeFromByte<ITransmittedObject>(recevedData);
+            if (command is NetworkAuthTransmitted)
+            {
+                string result = (command as NetworkAuthTransmitted).name;
+                _authResultDelegate.Invoke(result != "error");
+                return;
+            }
             _receiveDelegate?.Invoke(command);
         }
 
@@ -100,13 +150,6 @@ namespace NetworkCore
             return true;
         }
 
-        public bool SendObject(ITransmittedObject obj)
-        {
-            if (!connected)
-                return false;
-            byte[] data = Utilits.SerializeToBytes<ITransmittedObject>(obj);
-            SendData(data);
-            return true;
-        }
+        
     }
 }
