@@ -12,6 +12,7 @@ namespace NetworkCore
         private Action<ServerClient>    _disconnectDelegate;
         private Action<byte[]>          _sendToAllDelegate;
         private Func<string, bool>      _setNameDelegate;
+        private Action<byte[], string>  _sendToUserDelegate;
         private string                  userName;
         public  string                  UserName                =>      userName;
 
@@ -21,15 +22,27 @@ namespace NetworkCore
         /// <param name="socket">Сокет клиента</param>
         /// <param name="disconnectDelegate">делегат, вызывающийся при закрытии соединения</param>
         /// <param name="sendToAllDelegate">делегат, пересылки пакета всем клиентам</param>
-        public ServerClient(Socket socket, Action<ServerClient> disconnectDelegate, Action<byte[]> sendToAllDelegate, Func<string,bool> setNameDelegate)
+        public ServerClient(Socket socket, 
+            Action<ServerClient> disconnectDelegate, 
+            Action<byte[]> sendToAllDelegate, 
+            Action<byte[], string> sendToUserDelegate, 
+            Func<string,bool> setNameDelegate)
         {
             _clientSocket = socket;
             _disconnectDelegate = disconnectDelegate;
             _sendToAllDelegate = sendToAllDelegate;
+            _sendToUserDelegate = sendToUserDelegate;
             _setNameDelegate = setNameDelegate;
             _clientThread = new Thread(Listen);
             _clientThread.IsBackground = true;
             _clientThread.Start();
+        }
+
+        public void Disconnect()
+        {
+            _disconnectDelegate.Invoke(this);
+            _clientSocket.Shutdown(SocketShutdown.Both);
+            _clientSocket.Close();
         }
 
         /// <summary>
@@ -39,16 +52,10 @@ namespace NetworkCore
         {
             while(_clientSocket.Connected)
             {
-                byte[] header = new byte[Utilits.HeaderSize];
-                _clientSocket.Receive(header);
-                int dataLength = int.Parse(Encoding.Unicode.GetString(header));
-                byte[] data = new byte[dataLength];
-                _clientSocket.Receive(data);
-                ReceiveCommand(data);
+                ReceiveCommand(ReceiveHeaderAndData());
             }
             Disconnect();
         }
-
         /// <summary>
         /// Данные от клиента рассылаем всем
         /// </summary>
@@ -69,25 +76,37 @@ namespace NetworkCore
                 {
                     data = Utilits.SerializeToBytes(new NetworkAuthTransmitted("error"));
                 }
-                SendData(data);
+                SendHeaderAndData(data);
                 return;
             }
+            if (command is ObjectToUserTransmitted)
+            {
+                string userName = (command as ObjectToUserTransmitted).name;
+                byte[] data = ReceiveHeaderAndData();
+                _sendToUserDelegate?.Invoke(data, userName);
+                return;
+            }
+
+
             _sendToAllDelegate.Invoke(recevedData);
         }
 
-        private void Disconnect()
-        {
-            _disconnectDelegate.Invoke(this);
-            _clientSocket.Shutdown(SocketShutdown.Both);
-            _clientSocket.Close();
-        }
 
-        public bool SendData(byte[] data)
+        public bool SendHeaderAndData(byte[] data)
         {
             byte[] header = Utilits.GetHeader(data.Length);
             _clientSocket.Send(header);
             _clientSocket.Send(data);
             return true;
+        }
+        private byte[] ReceiveHeaderAndData()
+        {
+            byte[] header = new byte[Utilits.HeaderSize];
+            _clientSocket.Receive(header);
+            int dataLength = int.Parse(Encoding.Unicode.GetString(header));
+            byte[] data = new byte[dataLength];
+            _clientSocket.Receive(data);
+            return data;
         }
     }
 }

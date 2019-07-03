@@ -33,7 +33,8 @@ namespace NetworkCore
             _tryStop = false;
             Client client = new Client("127.0.0.1", _mainPort, (res)=> { }, (o) => { });
             client.Connect();
-            client.Disconnect();
+            foreach (ServerClient c in clients)
+                c.Disconnect();
         }
 
         private void Listen()
@@ -49,13 +50,17 @@ namespace NetworkCore
                     Socket clientSocket = _mainSocket.Accept();
                     clients.Add(new ServerClient(clientSocket, (disconnectedClient)=>
                     {
-                        if (clients.Contains(disconnectedClient))
+                        if (clients.Contains(disconnectedClient) && !_tryStop)
                             clients.Remove(disconnectedClient);
                     },
                     (sendedToAllData)=> 
                     {
                         foreach (ServerClient client in clients)
-                            client.SendData(sendedToAllData);
+                            client.SendHeaderAndData(sendedToAllData);
+                    },
+                    (sendToUserData, userName) => 
+                    {
+                        clients.FirstOrDefault(c => c.UserName == userName)?.SendHeaderAndData(sendToUserData);
                     },
                     (userName)=> {
                         return clients.FirstOrDefault(c => c.UserName == userName) == null;
