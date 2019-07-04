@@ -20,11 +20,12 @@ namespace NetworkCore
 
 
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="ip">адрес удаленного сервера</param>
         /// <param name="port">порт удаленного сервера</param>
-        /// <param name="receiveDataDelegate">делегат, возвращающий полученный обьект ITransmittedObject</param>
+        /// <param name="authResultDelegate">делегат, возвращающий результат авторизации</param>
+        /// <param name="receiveObjectDelegate">делегат, возвращающий полученный обьект ITransmittedObject</param>
         /// <param name="errorsInfoDelegate">делегат, возвращающий текст ошибки</param>
         public Client(string ip, int port, 
             Action<bool> authResultDelegate,
@@ -86,7 +87,7 @@ namespace NetworkCore
             return true;
         }
 
-
+        #region Send
         /// <summary>
         /// Передача объекта по сети, всем клиентам
         /// </summary>
@@ -136,8 +137,16 @@ namespace NetworkCore
             SendHeaderAndData(data);
             return true;
         }
+        private bool SendHeaderAndData(byte[] data)
+        {
+            byte[] header = Utilits.GetHeader(data.Length);
+            _clientSocket.Send(header);
+            _clientSocket.Send(data);
+            return true;
+        }
+        #endregion
 
-
+        #region Receive
         private void Listen()
         {
             while(_clientSocket.Connected)
@@ -145,6 +154,15 @@ namespace NetworkCore
                 ReceiveCommand(ReceiveHeaderAndData());
             }
             Disconnect();
+        }
+        private byte[] ReceiveHeaderAndData()
+        {
+            byte[] header = new byte[Utilits.HeaderSize];
+            _clientSocket.Receive(header);
+            int dataLength = int.Parse(Encoding.Unicode.GetString(header));
+            byte[] data = new byte[dataLength];
+            _clientSocket.Receive(data);
+            return data;
         }
         private void ReceiveCommand(byte[] recevedData)
         {
@@ -157,23 +175,10 @@ namespace NetworkCore
             }
             _receiveDelegate?.Invoke(command);
         }
+        #endregion
 
 
-        private bool SendHeaderAndData(byte[] data)
-        {
-            byte[] header = Utilits.GetHeader(data.Length);
-            _clientSocket.Send(header);
-            _clientSocket.Send(data);
-            return true;
-        }
-        private byte[] ReceiveHeaderAndData()
-        {
-            byte[] header = new byte[Utilits.HeaderSize];
-            _clientSocket.Receive(header);
-            int dataLength = int.Parse(Encoding.Unicode.GetString(header));
-            byte[] data = new byte[dataLength];
-            _clientSocket.Receive(data);
-            return data;
-        }
+
+
     }
 }

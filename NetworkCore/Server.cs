@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Net;
@@ -18,6 +19,15 @@ namespace NetworkCore
         private bool                _isWork     =       false;
         private bool                _tryStop    =       true;
 
+        /// <summary>
+        /// Событие авторизации клиента с именем
+        /// </summary>
+        public event Action<string> ClientLoggedInEvent;
+        /// <summary>
+        /// Событие отключения клиента с именем
+        /// </summary>
+        public event Action<string> ClientLoggedOutEvent;
+
         public Server(int port = 0)
         {
             _mainPort = port;
@@ -28,8 +38,13 @@ namespace NetworkCore
             _mainThread.Start();
         }
 
+        /// <summary>
+        /// Команда на остановку сервера
+        /// </summary>
         public void TryStop()
         {
+            if (!_tryStop)
+                return;
             _tryStop = false;
             Client client = new Client("127.0.0.1", _mainPort, (res)=> { }, (o) => { });
             client.Connect();
@@ -48,22 +63,32 @@ namespace NetworkCore
                 while (_tryStop)
                 {
                     Socket clientSocket = _mainSocket.Accept();
-                    clients.Add(new ServerClient(clientSocket, (disconnectedClient)=>
+                    clients.Add(new ServerClient(clientSocket, 
+                    (disconnectedClient)        => 
                     {
                         if (clients.Contains(disconnectedClient) && !_tryStop)
+                        {
                             clients.Remove(disconnectedClient);
+                            if (disconnectedClient.UserName != "")
+                                ClientLoggedOutEvent?.Invoke(disconnectedClient.UserName);
+                        }
                     },
-                    (sendedToAllData)=> 
+                    (sendedToAllData)           => 
                     {
                         foreach (ServerClient client in clients)
                             client.SendHeaderAndData(sendedToAllData);
                     },
-                    (sendToUserData, userName) => 
+                    (sendToUserData, userName)  => 
                     {
                         clients.FirstOrDefault(c => c.UserName == userName)?.SendHeaderAndData(sendToUserData);
                     },
-                    (userName)=> {
-                        return clients.FirstOrDefault(c => c.UserName == userName) == null;
+                    (userName)                  => {
+                        if (clients.FirstOrDefault(c => c.UserName == userName) == null)
+                        {
+                            ClientLoggedInEvent?.Invoke(userName);
+                            return true;
+                        }
+                        return false;
                     }));
                 }
                 _mainSocket.Shutdown(SocketShutdown.Both);

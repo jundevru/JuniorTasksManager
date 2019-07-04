@@ -13,15 +13,18 @@ namespace NetworkCore
         private Action<byte[]>          _sendToAllDelegate;
         private Func<string, bool>      _setNameDelegate;
         private Action<byte[], string>  _sendToUserDelegate;
-        private string                  userName;
+        private string                  userName = "";
         public  string                  UserName                =>      userName;
 
+
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="socket">Сокет клиента</param>
         /// <param name="disconnectDelegate">делегат, вызывающийся при закрытии соединения</param>
         /// <param name="sendToAllDelegate">делегат, пересылки пакета всем клиентам</param>
+        /// <param name="sendToUserDelegate">делегат, пересылки пакета клиенту по имени</param>
+        /// <param name="setNameDelegate">делегат установки имени клиента</param>
         public ServerClient(Socket socket, 
             Action<ServerClient> disconnectDelegate, 
             Action<byte[]> sendToAllDelegate, 
@@ -37,7 +40,6 @@ namespace NetworkCore
             _clientThread.IsBackground = true;
             _clientThread.Start();
         }
-
         public void Disconnect()
         {
             _disconnectDelegate.Invoke(this);
@@ -86,8 +88,6 @@ namespace NetworkCore
                 _sendToUserDelegate?.Invoke(data, userName);
                 return;
             }
-
-
             _sendToAllDelegate.Invoke(recevedData);
         }
 
