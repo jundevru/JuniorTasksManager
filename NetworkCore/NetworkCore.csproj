@@ -40,9 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Transmit\ByteDataTransmitted.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="Transmit\ObjectToUserTransmitted.cs" />
     <Compile Include="Transmit\NetworkAuthTransmitted.cs" />
     <Compile Include="Utilits.cs" />
     <Compile Include="Transmit\ITransmittedObject.cs" />

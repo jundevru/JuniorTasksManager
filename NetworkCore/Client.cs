@@ -40,7 +40,6 @@ namespace NetworkCore
             _authResultDelegate = authResultDelegate;
         }
 
-
         /// <summary>
         /// Подключиться к серверу
         /// </summary>
@@ -69,6 +68,7 @@ namespace NetworkCore
             _listenThread.Start();
             return true;
         }
+
         /// <summary>
         /// Отключиться от сервера
         /// </summary>
@@ -86,49 +86,22 @@ namespace NetworkCore
             return true;
         }
 
-
         /// <summary>
         /// Передача объекта по сети, всем клиентам
         /// </summary>
         /// <param name="obj">Объект ITransmittedObject</param>
         /// <returns></returns>
-        public bool SendToAll(ITransmittedObject obj)
+        public bool SendObjectToAll(ITransmittedObject obj)
         {
             if (!connected)
-            {
-                _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
-            }
             byte[] data = Utilits.SerializeToBytes<ITransmittedObject>(obj);
-            SendHeaderAndData(data);
+            SendData(data);
             return true;
         }
-        public bool SendToAll(byte[] data)
-        {
-            if (SendToAll(new ByteDataTransmitted(data.Length)))
-            {
-                _clientSocket.Send(data);
-                return true;
-            }
-            return false;
-        }
-        /// <summary>
-        /// Передача объекта по сети конкретному пользователю
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public bool SendToClient(ITransmittedObject obj, string userName)
-        {
-            if (!connected)
-            {
-                _errorsDelegate?.Invoke("Подключение не открыто");
-                return false;
-            }
-            SendHeaderAndData(Utilits.SerializeToBytes(new ObjectToUserTransmitted(userName)));
-            SendHeaderAndData(Utilits.SerializeToBytes(obj));
-            return true;
-        }
+        
+
+
         /// <summary>
         /// Попытка авторизации на сервере с именем
         /// </summary>
@@ -137,24 +110,26 @@ namespace NetworkCore
         public bool SendAuth(string name)
         {
             if (!connected)
-            {
-                _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
-            }
             byte[] data = Utilits.SerializeToBytes(new NetworkAuthTransmitted(name));
-            SendHeaderAndData(data);
+            SendData(data);
             return true;
         }
-
 
         private void Listen()
         {
             while(_clientSocket.Connected)
             {
-                ReceiveCommand(ReceiveHeaderAndData());
+                byte[] header = new byte[Utilits.HeaderSize];
+                _clientSocket.Receive(header);
+                int dataLength = int.Parse(Encoding.Unicode.GetString(header));
+                byte[] data = new byte[dataLength];
+                _clientSocket.Receive(data);
+                ReceiveCommand(data);
             }
             Disconnect();
         }
+
         private void ReceiveCommand(byte[] recevedData)
         {
             ITransmittedObject command = Utilits.DeserializeFromByte<ITransmittedObject>(recevedData);
@@ -167,22 +142,14 @@ namespace NetworkCore
             _receiveDelegate?.Invoke(command);
         }
 
-
-        private bool SendHeaderAndData(byte[] data)
+        private bool SendData(byte[] data)
         {
             byte[] header = Utilits.GetHeader(data.Length);
             _clientSocket.Send(header);
             _clientSocket.Send(data);
             return true;
         }
-        private byte[] ReceiveHeaderAndData()
-        {
-            byte[] header = new byte[Utilits.HeaderSize];
-            _clientSocket.Receive(header);
-            int dataLength = int.Parse(Encoding.Unicode.GetString(header));
-            byte[] data = new byte[dataLength];
-            _clientSocket.Receive(data);
-            return data;
-        }
+
+        
     }
 }
