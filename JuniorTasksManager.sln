@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManagerServer", "Tasks
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksManagerClient", "TasksManagerClient\TasksManagerClient.csproj", "{A90A3D8A-5A40-4FC7-BA1E-3AA6C8C358E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatTestApp", "ChatTestApp\ChatTestApp.csproj", "{C19AE7EC-1D3B-4533-9869-53F134C83390}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A90A3D8A-5A40-4FC7-BA1E-3AA6C8C358E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A90A3D8A-5A40-4FC7-BA1E-3AA6C8C358E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A90A3D8A-5A40-4FC7-BA1E-3AA6C8C358E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19AE7EC-1D3B-4533-9869-53F134C83390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19AE7EC-1D3B-4533-9869-53F134C83390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19AE7EC-1D3B-4533-9869-53F134C83390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19AE7EC-1D3B-4533-9869-53F134C83390}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

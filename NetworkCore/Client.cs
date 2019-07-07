@@ -14,8 +14,10 @@ namespace NetworkCore
         private string                      _serverIP;
         private int                         _serverPort;
         private Action<string>              _errorsDelegate;
-        private Action<ITransmittedObject>  _receiveDelegate;
+        private Action<ITransmittedObject>  _receiveObjectDelegate;
+        private Action<byte[]>              _receiveBytesDelegate;
         private Action<bool>                _authResultDelegate;
+        private Action                      _disconnectDelegate;
         private bool                        connected           =   false;
 
 
@@ -30,6 +32,8 @@ namespace NetworkCore
         public Client(string ip, int port, 
             Action<bool> authResultDelegate,
             Action<ITransmittedObject> receiveObjectDelegate, 
+            Action<byte[]> receiveBytesDelegate,
+            Action disconnectDelegate,
             Action<string> errorsInfoDelegate = null)
         {
             _serverIP = ip;
@@ -37,8 +41,10 @@ namespace NetworkCore
             if (_serverPort == 0)
                 _serverPort = Utilits.DefaultPort;
             _errorsDelegate = errorsInfoDelegate;
-            _receiveDelegate = receiveObjectDelegate;
+            _receiveObjectDelegate = receiveObjectDelegate;
+            _receiveBytesDelegate = receiveBytesDelegate;
             _authResultDelegate = authResultDelegate;
+            _disconnectDelegate = disconnectDelegate;
         }
 
 
@@ -89,11 +95,12 @@ namespace NetworkCore
 
         #region Send
         /// <summary>
-        /// Передача объекта по сети, всем клиентам
+        /// Send Object to all or client
         /// </summary>
-        /// <param name="obj">Объект ITransmittedObject</param>
+        /// <param name="obj"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public bool SendObjectToAll(ITransmittedObject obj)
+        public bool SendObject(ITransmittedObject obj, string to = "")
         {
             if (!connected)
             {
@@ -101,24 +108,9 @@ namespace NetworkCore
                 return false;
             }
             byte[] data = Utilits.SerializeToBytes<ITransmittedObject>(obj);
-            SendHeaderAndData(data);
-            return true;
-        }
-        /// <summary>
-        /// Передача объекта по сети конкретному пользователю
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public bool SendObjectToClient(ITransmittedObject obj, string userName)
-        {
-            if (!connected)
-            {
-                _errorsDelegate?.Invoke("Подключение не открыто");
-                return false;
-            }
-            SendHeaderAndData(Utilits.SerializeToBytes(new ObjectToUserTransmitted(userName)));
-            SendHeaderAndData(Utilits.SerializeToBytes(obj));
+            TransmittedInfoObject header = new TransmittedInfoObject(to, data.Length, TransmittedDataType.TransmittedObject);
+            _clientSocket.Send(Utilits.SerializeToBytes(header));
+            _clientSocket.Send(data);
             return true;
         }
         /// <summary>
@@ -133,15 +125,7 @@ namespace NetworkCore
                 _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
             }
-            byte[] data = Utilits.SerializeToBytes(new NetworkAuthTransmitted(name));
-            SendHeaderAndData(data);
-            return true;
-        }
-        private bool SendHeaderAndData(byte[] data)
-        {
-            byte[] header = Utilits.GetHeader(data.Length);
-            _clientSocket.Send(header);
-            _clientSocket.Send(data);
+            _clientSocket.Send(Utilits.SerializeToBytes(new NetworkAuthTransmitted(name)));
             return true;
         }
         #endregion
@@ -151,18 +135,21 @@ namespace NetworkCore
         {
             while(_clientSocket.Connected)
             {
-                ReceiveCommand(ReceiveHeaderAndData());
+                byte[] header = new byte[Utilits.HeaderSize];
+                try
+                {
+                    int readed = _clientSocket.Receive(header);
+                    if (readed == 0)
+                        continue;
+                }catch(Exception ex)
+                {
+                    _errorsDelegate?.Invoke(ex.Message);
+                    continue;
+                }
+                ReceiveCommand(header);
             }
             Disconnect();
-        }
-        private byte[] ReceiveHeaderAndData()
-        {
-            byte[] header = new byte[Utilits.HeaderSize];
-            _clientSocket.Receive(header);
-            int dataLength = int.Parse(Encoding.Unicode.GetString(header));
-            byte[] data = new byte[dataLength];
-            _clientSocket.Receive(data);
-            return data;
+            _disconnectDelegate?.Invoke();
         }
         private void ReceiveCommand(byte[] recevedData)
         {
@@ -171,9 +158,22 @@ namespace NetworkCore
             {
                 string result = (command as NetworkAuthTransmitted).name;
                 _authResultDelegate.Invoke(result != "error");
+                if (result == "error")
+                    _errorsDelegate?.Invoke("Пользователь с таким ником уже подключен");
                 return;
             }
-            _receiveDelegate?.Invoke(command);
+            if (command is TransmittedInfoObject)
+            {
+                var obj = command as TransmittedInfoObject;
+                byte[] data = new byte[obj.length];
+                int readed = _clientSocket.Receive(data);
+                if (obj.type == TransmittedDataType.Bytes)
+                    _receiveBytesDelegate?.Invoke(data);
+                else
+                    _receiveObjectDelegate?.Invoke(Utilits.DeserializeFromByte<ITransmittedObject>(data));
+                return;
+            }
+            _errorsDelegate?.Invoke("Приняты неизвестные данные");
         }
         #endregion
 

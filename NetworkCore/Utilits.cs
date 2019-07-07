@@ -8,28 +8,7 @@ namespace NetworkCore
     public static class Utilits
     {
         public static int DefaultPort = 6070;
-        public static readonly int HeaderSize = 16;
-
-        /// <summary>
-        /// Заголовок фиксированной длинны, первый отправляемый в сеть, содержащий число - размер следующего массива данных
-        /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public static byte[] GetHeader(int length)                                                      
-        {
-            string header = length.ToString();
-            if (header.Length < HeaderSize)
-            {
-                string zeros = null;
-                for (int i = 0; i < (HeaderSize - header.Length); i++)
-                {
-                    zeros += "0";
-                }
-                header = zeros + header;
-            }
-            byte[] byteheader = Encoding.Unicode.GetBytes(header);
-            return byteheader;
-        }
+        public static readonly int HeaderSize = 2048;
 
         public static byte[] SerializeToBytes<T>(T obj) where T : class
         {

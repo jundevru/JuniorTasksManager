@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TasksManagerClient
+namespace ChatTestApp.View
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -23,6 +23,8 @@ namespace TasksManagerClient
         public MainWindow()
         {
             InitializeComponent();
+            ViewModels.MainWindowViewModel vm = new ViewModels.MainWindowViewModel();
+            this.DataContext = vm;
         }
     }
 }

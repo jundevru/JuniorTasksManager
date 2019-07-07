@@ -17,7 +17,7 @@ namespace NetworkCore
         private string              _mainHost   =       "127.0.0.1";
         private int                 _mainPort;
         private bool                _isWork     =       false;
-        private bool                _tryStop    =       true;
+        private bool                _tryStop    =       false;
 
         /// <summary>
         /// Событие авторизации клиента с именем
@@ -26,7 +26,20 @@ namespace NetworkCore
         /// <summary>
         /// Событие отключения клиента с именем
         /// </summary>
-        public event Action<string> ClientLoggedOutEvent;
+        public event Action<string> ClientLoggedOutEvent;      
+        /// <summary>
+        /// Сервер остановлен
+        /// </summary>
+        public event Action ServerStopped;
+        /// <summary>
+        /// Сервер запущен
+        /// </summary>
+        public event Action ServerStarted;
+        /// <summary>
+        /// Изменено количество подключений
+        /// </summary>
+        public event Action<int> ConnectionsChange;
+
 
         public Server(int port = 0)
         {
@@ -43,13 +56,11 @@ namespace NetworkCore
         /// </summary>
         public void TryStop()
         {
-            if (!_tryStop)
+            if (_tryStop)
                 return;
-            _tryStop = false;
-            Client client = new Client("127.0.0.1", _mainPort, (res)=> { }, (o) => { });
+            _tryStop = true;          
+            Client client = new Client("127.0.0.1", _mainPort, (res)=> { }, (res) => { }, (o) => { }, ()=> { });
             client.Connect();
-            foreach (ServerClient c in clients)
-                c.Disconnect();
         }
 
         private void Listen()
@@ -60,40 +71,69 @@ namespace NetworkCore
                 _mainSocket.Bind(new IPEndPoint(adress, _mainPort));
                 _mainSocket.Listen(100);
                 _isWork = true;
-                while (_tryStop)
+                ServerStarted?.Invoke();
+                ConnectionsChange?.Invoke(clients.Count);
+                while (!_tryStop)
                 {
+                    
                     Socket clientSocket = _mainSocket.Accept();
-                    clients.Add(new ServerClient(clientSocket, 
-                    (disconnectedClient)        => 
+                    lock (clients)
                     {
-                        if (clients.Contains(disconnectedClient) && !_tryStop)
+                        clients.Add(new ServerClient(clientSocket,
+                        (disconnectedClient) =>
                         {
-                            clients.Remove(disconnectedClient);
-                            if (disconnectedClient.UserName != "")
-                                ClientLoggedOutEvent?.Invoke(disconnectedClient.UserName);
-                        }
-                    },
-                    (sendedToAllData)           => 
-                    {
-                        foreach (ServerClient client in clients)
-                            client.SendHeaderAndData(sendedToAllData);
-                    },
-                    (sendToUserData, userName)  => 
-                    {
-                        clients.FirstOrDefault(c => c.UserName == userName)?.SendHeaderAndData(sendToUserData);
-                    },
-                    (userName)                  => {
-                        if (clients.FirstOrDefault(c => c.UserName == userName) == null)
+                            lock (clients)
+                            {
+                                if (clients.Contains(disconnectedClient) && !_tryStop)
+                                {
+                                    clients.Remove(disconnectedClient);
+                                    if (disconnectedClient.UserName != "")
+                                        ClientLoggedOutEvent?.Invoke(disconnectedClient.UserName);
+                                }
+                                ConnectionsChange?.Invoke(clients.Count);
+                            }
+                        },
+                        (header, sendedToAllData) =>
                         {
-                            ClientLoggedInEvent?.Invoke(userName);
-                            return true;
-                        }
-                        return false;
-                    }));
+                            lock (clients)
+                            { 
+                            foreach (ServerClient client in clients)
+                                client.SendData(header, sendedToAllData);
+                            }
+                        },
+                        (header, sendToUserData, userName) =>
+                        {
+                            lock (clients)
+                            {
+                                clients.FirstOrDefault(c => c.UserName == userName)?.SendData(header, sendToUserData);
+                            }
+                        },
+                        (userName) =>
+                        {
+                            lock (clients)
+                            {
+                                if (clients.FirstOrDefault(c => c.UserName == userName) == null)
+                                {
+                                    ClientLoggedInEvent?.Invoke(userName);
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }));
+                    
+                        ConnectionsChange?.Invoke(clients.Count);
+                    }
                 }
-                _mainSocket.Shutdown(SocketShutdown.Both);
+                lock (clients)
+                {
+                    foreach (ServerClient c in clients)
+                        c.Disconnect();
+                    clients.Clear();
+                }
+                //_mainSocket.Shutdown(SocketShutdown.Both);
                 _mainSocket.Close();
                 _isWork = false;
+                ServerStopped?.Invoke();
             }
         }
 
