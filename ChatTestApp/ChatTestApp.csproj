@@ -66,6 +66,7 @@
     <Compile Include="Helpers\CommandDelegate.cs" />
     <Compile Include="Helpers\InvokeHelper.cs" />
     <Compile Include="Helpers\Notifier.cs" />
+    <Compile Include="Model\ChatMessageModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

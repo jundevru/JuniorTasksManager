@@ -20,5 +20,18 @@
             <TextBox MaxWidth="120" MinWidth="100" Text="{Binding Nick}"/>
             <Button Content="Connect" Command="{Binding ConnectCommand}"/>
         </WrapPanel>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Messages}"
+                 DisplayMemberPath="Message">
+        </ListBox>
+        <DockPanel Grid.Row="2" Margin="3" HorizontalAlignment="Stretch">
+            <TextBox DockPanel.Dock="Left" 
+                     TextWrapping="WrapWithOverflow"
+                     MinWidth="100"
+                     Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button HorizontalAlignment="Right" 
+                    Content="Send Message"
+                    Command="{Binding SendCommand}"/>
+        </DockPanel>
     </Grid>
 </Window>

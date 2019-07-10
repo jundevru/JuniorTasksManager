@@ -2,6 +2,7 @@
 
 namespace ChatTestApp.Helpers
 {
+    [System.Serializable]
     class Notifier : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };

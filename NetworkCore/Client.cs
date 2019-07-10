@@ -107,7 +107,12 @@ namespace NetworkCore
                 _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
             }
-            byte[] data = Utilits.SerializeToBytes<ITransmittedObject>(obj);
+            byte[] data = Utilits.SerializeToBytes(obj);
+            if (data == null)
+            {
+                _errorsDelegate?.Invoke("Ошибка сериализации данных\n"+Utilits.info);
+                return false;
+            }
             TransmittedInfoObject header = new TransmittedInfoObject(to, data.Length, TransmittedDataType.TransmittedObject);
             _clientSocket.Send(Utilits.SerializeToBytes(header));
             _clientSocket.Send(data);

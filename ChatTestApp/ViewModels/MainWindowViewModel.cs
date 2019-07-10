@@ -2,6 +2,7 @@
 using ChatTestApp.Helpers;
 using NetworkCore;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace ChatTestApp.ViewModels
 {
@@ -43,27 +44,57 @@ namespace ChatTestApp.ViewModels
             }
         }
 
+        private ObservableCollection<Model.ChatMessageModel> messages;
+        public ObservableCollection<Model.ChatMessageModel> Messages
+        {
+            get { return messages; }
+            set
+            {
+                messages = value;
+                NotifyPropertyChanged("Messages");
+            }
+        }
+
+        private string message;
+        public string Message
+        {
+            get { return message; }
+            set
+            {
+                message = value;
+                NotifyPropertyChanged("Message");
+            }
+        }
 
         public CommandDelegate ConnectCommand =>
         new CommandDelegate((obj) =>
         {
-            client = new Client(IP, NetworkCore.Utilits.DefaultPort, 
-                (res) => {
-                    InvokeHelper.InvokeEx(() => {
+            client = new Client(IP, NetworkCore.Utilits.DefaultPort,
+                (res) =>
+                {
+                    InvokeHelper.InvokeEx(() =>
+                    {
                         Auth = res;
                         if (!res)
                             client.Disconnect();
                     });
-                }, 
-                null, null,
+                },
+                (recivedObject) => {
+                    InvokeHelper.InvokeEx(() => {
+                        Messages.Add(recivedObject as Model.ChatMessageModel);
+                    });
+                }, null,
                 () =>
                 {
-                    InvokeHelper.InvokeEx(() => {
+                    InvokeHelper.InvokeEx(() =>
+                    {
                         Auth = false;
                     });
                 },
-                (message) => {
-                    InvokeHelper.InvokeEx(() => {
+                (message) =>
+                {
+                    InvokeHelper.InvokeEx(() =>
+                    {
                         MessageBox.Show(message);
                     });
                 });
@@ -75,12 +106,24 @@ namespace ChatTestApp.ViewModels
             return false;
         });
 
-
+        public CommandDelegate SendCommand =>
+            new CommandDelegate((obj) =>
+            {
+                if (!String.IsNullOrEmpty(Message))
+                {
+                    client.SendObject(new Model.ChatMessageModel(Nick + ": " + Message));
+                    Message = "";
+                }
+            }, (obj) =>
+            {
+                return Auth;
+            });
 
         public MainWindowViewModel()
         {
             IP = "127.0.0.1";
             Nick = "User" + DateTime.Now.ToShortTimeString();
+            Messages = new ObservableCollection<Model.ChatMessageModel>();
         }
     }
 }
