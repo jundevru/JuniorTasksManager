@@ -8,7 +8,7 @@ namespace NetworkCore
 {
     public class Client
     {
-        public  bool                        IsConnected         =>  connected;
+        public  bool                        IsConnected         =>  _clientSocket != null && _clientSocket.Connected;
         private Socket                      _clientSocket;
         private Thread                      _listenThread;
         private string                      _serverIP;
@@ -18,7 +18,6 @@ namespace NetworkCore
         private Action<byte[]>              _receiveBytesDelegate;
         private Action<bool>                _authResultDelegate;
         private Action                      _disconnectDelegate;
-        private bool                        connected           =   false;
 
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace NetworkCore
         /// <returns></returns>
         public bool Connect()
         {
-            if (connected)
+            if (IsConnected)
             {
                 _errorsDelegate?.Invoke("Подключение уже открыто");
                 return false;
@@ -70,7 +69,6 @@ namespace NetworkCore
                 _errorsDelegate?.Invoke(ex.Message);
                 return false;
             }
-            connected = true;
             _listenThread = new Thread(Listen);
             _listenThread.IsBackground = true;
             _listenThread.Start();
@@ -82,16 +80,20 @@ namespace NetworkCore
         /// <returns></returns>
         public bool Disconnect()
         {
-            if (!connected)
+            if (!IsConnected)
             {
                 _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
             }
-            connected = false;
-            _clientSocket.Shutdown(SocketShutdown.Both);
-            _clientSocket.Close();
+            CloseConnection();
             return true;
         }
+        private void CloseConnection()
+        {
+            _clientSocket.Shutdown(SocketShutdown.Both);
+            _clientSocket.Close();
+        }
+
 
         #region Send
         /// <summary>
@@ -102,7 +104,7 @@ namespace NetworkCore
         /// <returns></returns>
         public bool SendObject(ITransmittedObject obj, string to = "")
         {
-            if (!connected)
+            if (!IsConnected)
             {
                 _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
@@ -125,7 +127,7 @@ namespace NetworkCore
         /// <returns></returns>
         public bool SendAuth(string name)
         {
-            if (!connected)
+            if (!IsConnected)
             {
                 _errorsDelegate?.Invoke("Подключение не открыто");
                 return false;
@@ -134,6 +136,7 @@ namespace NetworkCore
             return true;
         }
         #endregion
+
 
         #region Receive
         private void Listen()
@@ -153,7 +156,7 @@ namespace NetworkCore
                 }
                 ReceiveCommand(header);
             }
-            Disconnect();
+            CloseConnection();
             _disconnectDelegate?.Invoke();
         }
         private void ReceiveCommand(byte[] recevedData)

@@ -69,41 +69,45 @@ namespace ChatTestApp.ViewModels
         public CommandDelegate ConnectCommand =>
         new CommandDelegate((obj) =>
         {
-            client = new Client(IP, NetworkCore.Utilits.DefaultPort,
-                (res) =>
-                {
-                    InvokeHelper.InvokeEx(() =>
+            if (client == null || !client.IsConnected)
+            {
+                client = new Client(IP, NetworkCore.Utilits.DefaultPort,
+                    (res) =>    // Делегат результата авторизации
                     {
-                        Auth = res;
-                        if (!res)
-                            client.Disconnect();
-                    });
-                },
-                (recivedObject) => {
-                    InvokeHelper.InvokeEx(() => {
-                        Messages.Add(recivedObject as Model.ChatMessageModel);
-                    });
-                }, null,
-                () =>
-                {
-                    InvokeHelper.InvokeEx(() =>
+                        InvokeHelper.InvokeEx(() =>
+                        {
+                            Auth = res;
+                        });
+                    },
+                    (recivedObject) =>  // Делегат приема объекта
                     {
-                        Auth = false;
-                    });
-                },
-                (message) =>
-                {
-                    InvokeHelper.InvokeEx(() =>
+                        InvokeHelper.InvokeEx(() =>
+                        {
+                            Messages.Add(recivedObject as Model.ChatMessageModel);
+                        });
+                    }, 
+                    null,               // Делегат приема байтов
+                    () =>               // Делегат закрытия соединения
                     {
-                        MessageBox.Show(message);
+                        InvokeHelper.InvokeEx(() =>
+                        {
+                            Auth = false;
+                        });
+                    },
+                    (message) =>        // Делегат сообщений об ошибках
+                    {
+                        InvokeHelper.InvokeEx(() =>
+                        {
+                            MessageBox.Show(message);
+                        });
                     });
-                });
-            if (client.Connect())
+                client.Connect();
+            }
+            if (client.IsConnected)
                 client.SendAuth(Nick);
         }, (obj) =>
         {
-            if (client == null || !client.IsConnected) return true;
-            return false;
+            return client == null || !Auth;
         });
 
         public CommandDelegate SendCommand =>

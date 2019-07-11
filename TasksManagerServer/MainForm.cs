@@ -40,14 +40,14 @@ namespace TasksManagerServer
         void StartServer()
         {
             server = new Server();
-            server.ClientLoggedInEvent += (s) =>
+            server.ClientLoginEvent += (s) =>
             {
                 Action action = () => {
                     lb_log.Items.Add(s + " connected");
                 };
                 this.InvokeEx(action);
             };
-            server.ClientLoggedOutEvent += (s) =>
+            server.ClientLogoutEvent += (s) =>
             {
                 this.InvokeEx(new Action(delegate () {
                     lb_log.Items.Add(s + " disconnected");

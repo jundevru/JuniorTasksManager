@@ -18,7 +18,7 @@
             <TextBox MaxWidth="120" MinWidth="100" Text="{Binding IP}"/>
             <TextBlock Text="name:"/>
             <TextBox MaxWidth="120" MinWidth="100" Text="{Binding Nick}"/>
-            <Button Content="Connect" Command="{Binding ConnectCommand}"/>
+            <Button Content="Connect/Auth" Command="{Binding ConnectCommand}"/>
         </WrapPanel>
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding Messages}"
@@ -26,8 +26,8 @@
         </ListBox>
         <DockPanel Grid.Row="2" Margin="3" HorizontalAlignment="Stretch">
             <TextBox DockPanel.Dock="Left" 
-                     TextWrapping="WrapWithOverflow"
-                     MinWidth="100"
+                     TextWrapping="Wrap"
+                     MinWidth="120"
                      Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button HorizontalAlignment="Right" 
                     Content="Send Message"

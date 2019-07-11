@@ -22,11 +22,11 @@ namespace NetworkCore
         /// <summary>
         /// Событие авторизации клиента с именем
         /// </summary>
-        public event Action<string> ClientLoggedInEvent;
+        public event Action<string> ClientLoginEvent;
         /// <summary>
         /// Событие отключения клиента с именем
         /// </summary>
-        public event Action<string> ClientLoggedOutEvent;      
+        public event Action<string> ClientLogoutEvent;      
         /// <summary>
         /// Сервер остановлен
         /// </summary>
@@ -88,7 +88,7 @@ namespace NetworkCore
                                 {
                                     clients.Remove(disconnectedClient);
                                     if (disconnectedClient.UserName != "")
-                                        ClientLoggedOutEvent?.Invoke(disconnectedClient.UserName);
+                                        ClientLogoutEvent?.Invoke(disconnectedClient.UserName);
                                 }
                                 ConnectionsChange?.Invoke(clients.Count);
                             }
@@ -114,7 +114,7 @@ namespace NetworkCore
                             {
                                 if (clients.FirstOrDefault(c => c.UserName == userName) == null)
                                 {
-                                    ClientLoggedInEvent?.Invoke(userName);
+                                    ClientLoginEvent?.Invoke(userName);
                                     return true;
                                 }
                             }
