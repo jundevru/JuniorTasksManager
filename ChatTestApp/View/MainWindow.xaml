@@ -25,13 +25,17 @@
                  DisplayMemberPath="Message">
         </ListBox>
         <DockPanel Grid.Row="2" Margin="3" HorizontalAlignment="Stretch">
+            <Button DockPanel.Dock="Right" 
+                    Content="Send Message"
+                    Command="{Binding SendCommand}"/>
             <TextBox DockPanel.Dock="Left" 
                      TextWrapping="Wrap"
                      MinWidth="120"
-                     Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button HorizontalAlignment="Right" 
-                    Content="Send Message"
-                    Command="{Binding SendCommand}"/>
+                     Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SendCommand}" Key="Enter"/>
+                </TextBox.InputBindings>
+            </TextBox>
         </DockPanel>
     </Grid>
 </Window>
