@@ -20,11 +20,33 @@ namespace TasksManagerClient.ViewModel
         public static readonly DependencyProperty CurrentPageProperty =
             DependencyProperty.Register("CurrentPage", typeof(Dialogs.PageDialog), typeof(MainWindowViewModel), new PropertyMetadata(null));
 
+        private AuthorizationViewModel avm;
+        private RegistrationViewModel rvm = null;
 
         public MainWindowViewModel()
         {
             CurrentPage = new Dialogs.PageDialog();
-            AuthorizationViewModel avm = new AuthorizationViewModel();
+            avm = new AuthorizationViewModel();
+            avm.AuthorizationEndEvent += (user) => 
+            {
+                throw new NotImplementedException("Авторизация успешно пройдена");
+            };
+            avm.RegistrationRequiredEvent += () =>
+            {
+                if (rvm == null)
+                {
+                    rvm = new RegistrationViewModel();
+                    rvm.CancelEvent += () =>
+                    {
+                        CurrentPage.ShowPage(avm);
+                    };
+                    rvm.RegistrationCompleteEvent += () =>
+                    {
+                        CurrentPage.ShowPage(avm);
+                    };
+                }
+                CurrentPage.ShowPage(rvm);                
+            };
             CurrentPage.ShowPage(avm);
         }
     }
