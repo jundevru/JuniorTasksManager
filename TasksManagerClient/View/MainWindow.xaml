@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TasksManagerClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding CurrentPage.Title}" Height="600" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Border Background="{StaticResource LeftBackgroundColor}">
+            
+        </Border>
+        <GridSplitter Grid.Column="0" 
+                      Width="3" 
+                      Background="Red"
+                      HorizontalAlignment="Right"/>
+        <Border Grid.Column="1" 
+                Background="{StaticResource RightBackgroundColor}">
+            <ContentPresenter Content="{Binding CurrentPage.View}"/>
+        </Border>
     </Grid>
 </Window>

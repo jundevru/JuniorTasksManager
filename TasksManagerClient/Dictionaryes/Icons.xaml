@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
+
+
+    <Path x:Key="IconCloseWin" x:Shared="False" Stretch="Uniform" Data="M6.1999817,0L16,9.8000031 25.799988,0 32,6.1999969 22.199982,16 32,25.800003 25.799988,32 16,22.199997 6.1999817,32 0,25.800003 9.7999878,16 0,6.1999969z" Fill="{StaticResource TextContentColor}" Stroke="{StaticResource TextContentColor}"/>
+    <Path x:Key="IconMinimize" x:Shared="False" Stretch="Uniform" Data="M11.800012,3.4000048L3.3000164,12.400003 18.599995,23.400003 12.800011,29.599998 28.099989,29.599998 28.099989,13.500002 22.199999,19.699999z M11.800012,0L22.099993,16.299997 30.300001,7.6000013 30.300001,32 7.2000079,32 15.300009,23.400003 0,12.500002z" Fill="{StaticResource TextContentColor}" Stroke="{StaticResource TextContentColor}"/>
+</ResourceDictionary>

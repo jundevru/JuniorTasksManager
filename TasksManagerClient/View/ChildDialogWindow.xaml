@@ -1,0 +1,41 @@
+﻿<Window x:Class="TasksManagerClient.View.ChildDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TasksManagerClient.View"
+        mc:Ignorable="d"
+        Style="{StaticResource DialogWindowStyle}"
+        WindowStartupLocation="CenterScreen"
+        Title="{Binding Title}" 
+        SizeToContent="WidthAndHeight" 
+        MinHeight="50" 
+        MinWidth="220">
+    <Border Style="{StaticResource DialogWindowBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource DialogWindowHeaderBorderStyle}">
+                <DockPanel Margin="2">
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title}"/>
+                    <Button x:Name="CloseButton" 
+                            DockPanel.Dock="Right" 
+                            HorizontalAlignment="Right" 
+                            Content="{StaticResource IconCloseWin}" 
+                            Style="{StaticResource IconButtonStyle}"/>
+                </DockPanel>
+            </Border>
+            <Button x:Name="oKay" 
+                    Margin="2,2,5,2"
+                    IsDefault="True" 
+                    Grid.Row="2" 
+                    Content="OK" 
+                    HorizontalAlignment="Right" 
+                    MinWidth="50"/>
+            <ContentPresenter Content="{Binding View}" Grid.Row="1"/>
+        </Grid>
+    </Border>
+</Window>
