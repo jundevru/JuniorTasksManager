@@ -4,14 +4,15 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TasksManagerClient.Model;
 
 namespace TasksManagerClient.DB
 {
-    class TasksDataBase : DbContext
+    class TaskDataBase : DbContext
     {
-        public static readonly TasksDataBase Instance = new TasksDataBase("HomeConnection");
-        TasksDataBase(string dbName)
+        public static readonly TaskDataBase Instance = new TaskDataBase("HomeConnection");
+        private TaskDataBase(string dbName)
             : base(dbName)
         {
         }
@@ -20,5 +21,18 @@ namespace TasksManagerClient.DB
         public DbSet<Performer> Perfomers { get; set; }
         public DbSet<WorkTask> WorkTasks { get; set; }
 
+        public bool SafeSaveChanges()
+        {
+            try
+            {
+                SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка сохранения: " + ex.Message);
+            }
+            return false;
+        }        
     }
 }

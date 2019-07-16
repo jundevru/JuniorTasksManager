@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Data.Entity;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -33,13 +34,29 @@ namespace TasksManagerClient.ViewModel
 
         public ICommand Authorize => new Helpers.CommandsDelegate((obj) => {
             Password = (obj as PasswordBox).Password;
-            Model.User user = DB.TasksDataBase.Instance.Users.ToList().FirstOrDefault((u) => u.Login == Login);
+            Model.User user = null;
+            try
+            {
+                user = DB.TaskDataBase.Instance.Users.ToList().FirstOrDefault((u) => u.Login == Login);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки пользователей: " + ex.Message);
+                return;
+            }             
             if (user == null)
             {
                 MessageBox.Show("Пользователь с таким логином не найден в базе");
                 return;
             }
-            if (!user.PasswordHash.Equals(Helpers.Utilits.GetHashString(Password)))
+            if (string.IsNullOrEmpty(user.PasswordHash))
+            {
+                user.PasswordHash = Helpers.Utilits.GetHashString(Password);
+                if (DB.TaskDataBase.Instance.SafeSaveChanges())
+                    return;
+                MessageBox.Show("Новый пароль успешно задан.");
+            }
+            else if (!user.PasswordHash.Equals(Helpers.Utilits.GetHashString(Password)))
             {
                 MessageBox.Show("Не верная пара логин-пароль");
                 return;
@@ -52,8 +69,6 @@ namespace TasksManagerClient.ViewModel
         public ICommand Registration => new Helpers.CommandsDelegate((obj) => {
             RegistrationRequiredEvent?.Invoke();
         }, (obj) => { return true; });
-
-
 
     }
 }

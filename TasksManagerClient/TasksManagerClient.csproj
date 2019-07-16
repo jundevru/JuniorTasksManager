@@ -67,25 +67,35 @@
     <Compile Include="Dialogs\ChildDialog.cs" />
     <Compile Include="Dialogs\IChildDialog.cs" />
     <Compile Include="Dialogs\IPageDialog.cs" />
+    <Compile Include="Dialogs\IPageDialogPresenter.cs" />
     <Compile Include="Dialogs\PageDialog.cs" />
     <Compile Include="Helpers\CommandDelegate.cs" />
     <Compile Include="Helpers\Utilits.cs" />
+    <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
+    <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ChildDialogWindow.xaml.cs">
+    <Compile Include="Dialogs\ChildDialogWindow.xaml.cs">
       <DependentUpon>ChildDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TaskView.xaml.cs">
+      <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dictionaryes\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dictionaryes\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionaryes\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,7 +111,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ChildDialogWindow.xaml">
+    <Page Include="Dialogs\ChildDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,6 +134,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\RegistrationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,7 +176,9 @@
       <Name>NetworkCore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="CurrentStep.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

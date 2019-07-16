@@ -12,7 +12,17 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Border Background="{StaticResource LeftBackgroundColor}">
-            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="{Binding CurrentUser.FIO}"/>
+                    <Button Content="Задачи" Command="{Binding TaskCommand}"/>
+                </StackPanel>
+                <Button Grid.Row="1" Content="Выход" Command="{Binding ExitCommand}"/>
+            </Grid>
         </Border>
         <GridSplitter Grid.Column="0" 
                       Width="3" 

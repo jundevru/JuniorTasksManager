@@ -6,8 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                
                 <ResourceDictionary Source="Dictionaryes\Brushes.xaml"/>
                 <ResourceDictionary Source="Dictionaryes\Icons.xaml"/>
+
+                <ResourceDictionary Source="Dictionaryes\Converters.xaml"/>
+
                 <ResourceDictionary Source="Dictionaryes\Buttons.xaml"/>
                 <ResourceDictionary Source="Dictionaryes\DialogWindow.xaml"/>
             </ResourceDictionary.MergedDictionaries>

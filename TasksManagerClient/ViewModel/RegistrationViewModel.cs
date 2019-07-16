@@ -35,13 +35,21 @@ namespace TasksManagerClient.ViewModel
         public ICommand Registration => new Helpers.CommandsDelegate((obj) =>
         {
             string password = (obj as PasswordBox).Password;
-            Model.User user = DB.TasksDataBase.Instance.Users.ToList().FirstOrDefault((u) => u.Login == Login);
+            Model.User user = null;
+            try
+            {
+                user = DB.TaskDataBase.Instance.Users.ToList().FirstOrDefault((u) => u.Login == Login);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки пользователей: " + ex.Message);
+                return;
+            }
             if (user != null)
             {
                 MessageBox.Show("Данный логин занят");
                 return;
-            }
-            MessageBox.Show(DB.TasksDataBase.Instance.Users.Local.Count + " " + Login);
+            }            
             if (!Helpers.Utilits.PasswordIsValid(password))
             {
                 MessageBox.Show("Пароль должен состоять из символов латинского алфавита, больших и маленьких и содержать цифру.");
@@ -53,16 +61,9 @@ namespace TasksManagerClient.ViewModel
                 FIO = FIO,
                 PasswordHash = Helpers.Utilits.GetHashString(password)
             };
-            try
-            {
-                DB.TasksDataBase.Instance.Users.Add(user);
-                DB.TasksDataBase.Instance.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+            DB.TaskDataBase.Instance.Users.Add(user);
+            if (!DB.TaskDataBase.Instance.SafeSaveChanges())
                 return;
-            }
             MessageBox.Show("Регистрация успешно завершена, пройдите авторизацию.");
             RegistrationCompleteEvent?.Invoke();
         }, (obj) =>
@@ -78,7 +79,6 @@ namespace TasksManagerClient.ViewModel
         {
             return true;
         });
-
 
     }
 }
