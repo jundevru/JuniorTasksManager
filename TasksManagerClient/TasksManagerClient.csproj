@@ -70,9 +70,13 @@
     <Compile Include="Dialogs\IPageDialogPresenter.cs" />
     <Compile Include="Dialogs\PageDialog.cs" />
     <Compile Include="Helpers\CommandDelegate.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\Utilits.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\WorkTaskEnumsConverters.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModel\ChatViewModel.cs" />
+    <Compile Include="ViewModel\NewTaskViewModel.cs" />
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="View\AuthorizationView.xaml.cs">
@@ -80,6 +84,12 @@
     </Compile>
     <Compile Include="Dialogs\ChildDialogWindow.xaml.cs">
       <DependentUpon>ChildDialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewTaskView.xaml.cs">
+      <DependentUpon>NewTaskView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
@@ -115,6 +125,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ChatView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,6 +147,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\NewTaskView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\RegistrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

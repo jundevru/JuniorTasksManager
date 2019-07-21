@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using TasksManagerClient.Helpers;
 
 namespace TasksManagerClient.Model
@@ -6,12 +7,16 @@ namespace TasksManagerClient.Model
 
     enum WorkTaskPriority
     {
+        [Description("Обычный")]
         Normal,
+        [Description("Высокий")]
         High
     }
     enum WorkTaskAccess
     {
+        [Description("Личная")]
         OnlyMy,
+        [Description("Исполнители")]
         OnlyPerformers
     }
     class WorkTask : Notifier

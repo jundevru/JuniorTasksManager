@@ -49,6 +49,10 @@ namespace TasksManagerClient.ViewModel
         },(obj)=> { return true; });
         #endregion
 
+        public ICommand EditTaskCommand => new Helpers.CommandsDelegate((obj) =>
+        {
+
+        }, (obj) => { return CurrentTask != null; });
 
         public string Title => "Список задач";
         private Dialogs.IPageDialogPresenter presenter;
@@ -56,13 +60,15 @@ namespace TasksManagerClient.ViewModel
         public TaskViewModel(Dialogs.IPageDialogPresenter presenter)
         {
             this.presenter = presenter;
+            //UpdateTasks();
         }
         private void UpdateTasks()
         {
             try
             {
-                DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == "Выбрать по текущему юзеру").Load();
-                WorkTasks = DB.TaskDataBase.Instance.WorkTasks.Local;
+                throw new NotImplementedException("111");
+                //DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == "Выбрать по текущему юзеру" || t.Performers.FirstOrDefault(p=> p.User.ID == "Выбрать по текущему юзеру") != null).Load();
+                //WorkTasks = DB.TaskDataBase.Instance.WorkTasks.Local;
             }
             catch (Exception ex)
             {

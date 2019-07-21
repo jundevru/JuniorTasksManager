@@ -3,5 +3,6 @@
                     xmlns:local="clr-namespace:TasksManagerClient.Helpers.ValueConverters">
 
     <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    <local:EnumToCollectionConverter x:Key="EnumToCollectionConverter" x:Shared ="False"/>
 
 </ResourceDictionary>

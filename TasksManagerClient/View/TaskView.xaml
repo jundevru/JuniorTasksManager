@@ -12,12 +12,23 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <WrapPanel>
-            <Button Content="Новая задача"/>
+            <Button Content="Новая задача" Command="{Binding NewTaskCommand}"/>
         </WrapPanel>
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding WorkTasks}"
                  SelectedItem="{Binding CurrentTask}">
-            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditTaskCommand}"/>
+                        </Grid.InputBindings>
+                        <!-- Шаблон напишу тут, т.к. биндинг двойного клика на команду нагляднее -->
+                        
+                        
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
     </Grid>
 </UserControl>

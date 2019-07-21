@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="TasksManagerClient.View.NewTaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TasksManagerClient.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Выберите доступность задачи"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Path=NewTask.Access, Converter={StaticResource EnumToCollectionConverter}, Mode=TwoWay}"
+                  SelectedValuePath="Value"
+                  DisplayMemberPath="Description"
+                  SelectedValue="{Binding Path=NewTask.Access}"/>
+        
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Выберите приоритет задачи"/>
+        <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Path=NewTask.Priority, Converter={StaticResource EnumToCollectionConverter}, Mode=TwoWay}"
+                  SelectedValuePath="Value"
+                  DisplayMemberPath="Description"
+                  SelectedValue="{Binding Path=NewTask.Priority}"/>
+
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
+                 TextWrapping="Wrap"
+                 Text="{Binding NewTask.Message}"/>
+        <DockPanel Grid.Row="5" Grid.Column="2">
+            <Button Content="Отмена" 
+                    DockPanel.Dock="Right"
+                    Command="{Binding CancelCreateCommand}"/>
+            <Button Content="Сохранить" 
+                    DockPanel.Dock="Right"
+                    Command="{Binding CreateCommand}"/>
+        </DockPanel>
+    </Grid>
+</UserControl>
