@@ -72,13 +72,17 @@
     <Compile Include="Helpers\CommandDelegate.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\Utilits.cs" />
+    <Compile Include="Helpers\ValueConverters\EnumToDescriptionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
-    <Compile Include="Helpers\ValueConverters\WorkTaskEnumsConverters.cs" />
+    <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />
+    <Compile Include="ViewModel\Dialogs\SelectUserViewModel.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />
-    <Compile Include="ViewModel\NewTaskViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\NewTaskViewModel.cs" />
     <Compile Include="ViewModel\RegistrationViewModel.cs" />
-    <Compile Include="ViewModel\TaskViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\ResolutionAndDateViewModel.cs" />
+    <Compile Include="ViewModel\TasksViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\TaskViewModel.cs" />
     <Compile Include="View\AuthorizationView.xaml.cs">
       <DependentUpon>AuthorizationView.xaml</DependentUpon>
     </Compile>
@@ -88,13 +92,22 @@
     <Compile Include="View\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NewTaskView.xaml.cs">
+    <Compile Include="View\Dialogs\SelectUserView.xaml.cs">
+      <DependentUpon>SelectUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialogs\NewTaskView.xaml.cs">
       <DependentUpon>NewTaskView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TaskView.xaml.cs">
+    <Compile Include="View\Dialogs\ResolutionAndDateView.xaml.cs">
+      <DependentUpon>ResolutionAndDateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TasksView.xaml.cs">
+      <DependentUpon>TasksView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialogs\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dictionaryes\Brushes.xaml">
@@ -129,6 +142,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Dialogs\SelectUserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -147,7 +164,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\NewTaskView.xaml">
+    <Page Include="View\Dialogs\NewTaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,7 +172,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TaskView.xaml">
+    <Page Include="View\Dialogs\ResolutionAndDateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TasksView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\TaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

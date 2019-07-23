@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TasksManagerClient.Dialogs;
 
 namespace TasksManagerClient.ViewModel
 {
-    class ChatViewModel : Helpers.Notifier, Dialogs.IPageDialog
+    class ChatViewModel : Helpers.Notifier, IPageDialog
     {
         public string Title => "Сообщения";
 

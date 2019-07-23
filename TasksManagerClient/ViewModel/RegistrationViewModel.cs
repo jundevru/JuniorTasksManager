@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TasksManagerClient.Dialogs;
 
 namespace TasksManagerClient.ViewModel
 {
-    class RegistrationViewModel : DependencyObject, Dialogs.IPageDialog
+    class RegistrationViewModel : DependencyObject, IPageDialog
     {
         public string Title => "Регистрация";
 

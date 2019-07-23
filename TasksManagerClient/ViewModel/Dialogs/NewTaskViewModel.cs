@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TasksManagerClient.Model;
+using TasksManagerClient.Dialogs;
 
 namespace TasksManagerClient.ViewModel
 {
-    class NewTaskViewModel : Helpers.Notifier, Dialogs.IPageDialog
+    class NewTaskViewModel : Helpers.Notifier, IPageDialog
     {
         public string Title => "Новая задача";
 

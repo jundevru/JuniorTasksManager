@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TasksManagerClient.Model;
+using TasksManagerClient.Dialogs;
 
 namespace TasksManagerClient.ViewModel
 {
-    class TaskViewModel : Helpers.Notifier, Dialogs.IPageDialog
+    class TasksViewModel : Helpers.Notifier, IPageDialog
     {
         private ObservableCollection<WorkTask> tasks;
         /// <summary>
@@ -55,9 +56,9 @@ namespace TasksManagerClient.ViewModel
         }, (obj) => { return CurrentTask != null; });
 
         public string Title => "Список задач";
-        private Dialogs.IPageDialogPresenter presenter;
+        private IPageDialogPresenter presenter;
 
-        public TaskViewModel(Dialogs.IPageDialogPresenter presenter)
+        public TasksViewModel(IPageDialogPresenter presenter)
         {
             this.presenter = presenter;
             //UpdateTasks();

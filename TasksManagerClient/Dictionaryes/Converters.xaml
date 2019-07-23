@@ -4,5 +4,6 @@
 
     <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <local:EnumToCollectionConverter x:Key="EnumToCollectionConverter" x:Shared ="False"/>
+    <local:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" x:Shared ="False"/>
 
 </ResourceDictionary>

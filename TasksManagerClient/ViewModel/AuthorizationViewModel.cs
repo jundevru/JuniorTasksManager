@@ -5,10 +5,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Data.Entity;
+using TasksManagerClient.Dialogs;
 
 namespace TasksManagerClient.ViewModel
 {
-    class AuthorizationViewModel : DependencyObject, Dialogs.IPageDialog
+    class AuthorizationViewModel : DependencyObject, IPageDialog
     {
         public string Title => "Авторизация";
 

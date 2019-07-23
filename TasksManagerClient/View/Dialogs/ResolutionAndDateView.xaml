@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="TasksManagerClient.View.ResolutionAndDateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TasksManagerClient.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Текст резолюции исполнителю:"/>
+        <TextBox Grid.Row="1"
+                 Text="{Binding Message}"
+                 TextWrapping="Wrap"/>
+
+        <TextBlock Grid.Row="2" 
+                   Text="Срок исполлнения:"/>
+
+        <DatePicker Grid.Row="3"
+                    SelectedDate="{Binding Period}"/>
+
+        <DockPanel Grid.Row="4">
+            <Button DockPanel.Dock="Right"
+                    Content="Готово"
+                    HorizontalAlignment="Right"
+                    Command="{Binding CompleteCommand}"/>
+        </DockPanel>
+    </Grid>
+</UserControl>

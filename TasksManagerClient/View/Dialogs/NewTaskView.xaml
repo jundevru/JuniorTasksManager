@@ -39,12 +39,14 @@
                  TextWrapping="Wrap"
                  Text="{Binding NewTask.Message}"/>
         <DockPanel Grid.Row="5" Grid.Column="2">
-            <Button Content="Отмена" 
+            <Button Content="Далее" 
                     DockPanel.Dock="Right"
-                    Command="{Binding CancelCreateCommand}"/>
-            <Button Content="Сохранить" 
-                    DockPanel.Dock="Right"
+                    HorizontalAlignment="Right"
                     Command="{Binding CreateCommand}"/>
+            <Button Content="Назад" 
+                    DockPanel.Dock="Right"
+                    HorizontalAlignment="Right"
+                    Command="{Binding CancelCreateCommand}"/>
         </DockPanel>
     </Grid>
 </UserControl>

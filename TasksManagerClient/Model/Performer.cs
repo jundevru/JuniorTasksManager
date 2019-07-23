@@ -1,12 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
 using TasksManagerClient.Helpers;
 
 namespace TasksManagerClient.Model
 {
     enum WorkTaskStates
     {
+        [Description ("В работе")]
         Work,
+        [Description ("Исполнено")]
         Complette,
+        [Description ("Отменено")]
         Cancel
     }
     /// <summary>

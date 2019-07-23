@@ -11,19 +11,19 @@ using TasksManagerClient.Model;
 
 namespace TasksManagerClient.ViewModel
 {
-    class MainWindowViewModel : DependencyObject, Dialogs.IPageDialogPresenter
+    class MainWindowViewModel : DependencyObject, IPageDialogPresenter
     {
 
         /// <summary>
         /// Текущая отображаемая страница
         /// </summary>
-        public Dialogs.PageDialog CurrentPage
+        public PageDialog CurrentPage
         {
-            get { return (Dialogs.PageDialog)GetValue(CurrentPageProperty); }
+            get { return (PageDialog)GetValue(CurrentPageProperty); }
             set { SetValue(CurrentPageProperty, value); }
         }
         public static readonly DependencyProperty CurrentPageProperty =
-            DependencyProperty.Register("CurrentPage", typeof(Dialogs.PageDialog), typeof(MainWindowViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentPage", typeof(PageDialog), typeof(MainWindowViewModel), new PropertyMetadata(null));
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace TasksManagerClient.ViewModel
         #region ViewModels 
         private AuthorizationViewModel avm;
         private RegistrationViewModel rvm = null;
-        private TaskViewModel tvm = null;
+        private TasksViewModel tvm = null;
         #endregion
 
 
@@ -65,7 +65,7 @@ namespace TasksManagerClient.ViewModel
         {
             CurrentUser = null;
 
-            tvm = new TaskViewModel(this);
+            tvm = new TasksViewModel(this);
 
             avm = new AuthorizationViewModel();
             avm.AuthorizationEndEvent += (user) => 
@@ -90,7 +90,7 @@ namespace TasksManagerClient.ViewModel
                 ShowPage(rvm);                
             };
 
-            CurrentPage = new Dialogs.PageDialog();
+            CurrentPage = new PageDialog();
             ShowPage(avm);
         }
 

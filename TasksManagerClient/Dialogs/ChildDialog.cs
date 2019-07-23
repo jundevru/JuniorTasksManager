@@ -27,7 +27,7 @@ namespace TasksManagerClient.Dialogs
         public bool DialogResult => dialogResult;
 
 
-        public ChildDialog(string title, object viewModel)
+        public ChildDialog(string title, Dialogs.IChildDialog viewModel)
         {
             #region Колхоз на тему: по быстрому найти подходящий View
             string viewTypeName = viewModel.GetType().FullName.Replace("ViewModels", "Views");
