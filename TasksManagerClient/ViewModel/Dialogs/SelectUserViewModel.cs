@@ -11,7 +11,7 @@ using TasksManagerClient.Model;
 
 namespace TasksManagerClient.ViewModel
 {
-    class SelectUserViewModel : Helpers.Notifier, TasksManagerClient.Dialogs.IPageDialog
+    class SelectUserViewModel : Helpers.Notifier, Dialogs.IPageDialog
     {
         public string Title => "Выберите исполнителя";
 
@@ -49,6 +49,11 @@ namespace TasksManagerClient.ViewModel
 
         public SelectUserViewModel()
         {
+
+        }
+
+        public void UpdatePropertyes()
+        {
             try
             {
                 DB.TaskDataBase.Instance.Users.Load();
@@ -59,6 +64,5 @@ namespace TasksManagerClient.ViewModel
                 MessageBox.Show(ex.Message);
             }
         }
-
     }
 }

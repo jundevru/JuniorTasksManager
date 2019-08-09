@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using TasksManagerClient.Dialogs;
 using TasksManagerClient.Model;
+using TasksManagerClient.ApplicationLogic;
+using TasksManagerClient.Statics;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -26,76 +28,64 @@ namespace TasksManagerClient.ViewModel
             DependencyProperty.Register("CurrentPage", typeof(PageDialog), typeof(MainWindowViewModel), new PropertyMetadata(null));
 
 
-        /// <summary>
-        /// Текущий авторизованный пользователь
-        /// </summary>
-        public User CurrentUser
-        {
-            get { return (User)GetValue(CurrentUserProperty); }
-            set { SetValue(CurrentUserProperty, value); }
-        }
-        public static readonly DependencyProperty CurrentUserProperty =
-            DependencyProperty.Register("CurrentUser", typeof(User), typeof(MainWindowViewModel), new PropertyMetadata(null));
-
         #region ICommands
+        /// <summary>
+        /// Выход из пользовалеля (приложения)
+        /// </summary>
         public ICommand ExitCommand => new Helpers.CommandsDelegate((obj) =>
         {
-            if (CurrentUser == null)
+            if (CurrentUser.Instance.User == null)
                 Application.Current.Shutdown();
             else
             {
-                CurrentUser = null;
-                CurrentPage.ShowPage(avm);
+                cvm.Disconnect();
+                CurrentUser.Instance.User = null;
+                stPage.StartDialog();
             }
         }, (obj) => { return true; });
+        /// <summary>
+        /// Переход к списку задач
+        /// </summary>
         public ICommand TaskCommand => new Helpers.CommandsDelegate((obj) =>
         {
             CurrentPage.ShowPage(tvm);
-        }, (obj) => { return true; });
+        }, (obj) => { return CurrentUser.Instance.User != null; });
+        /// <summary>
+        /// Переход к списку сообщений
+        /// </summary>
+        public ICommand MessagesCommand => new Helpers.CommandsDelegate((obj) =>
+        {
+            CurrentPage.ShowPage(cvm);
+        }, (obj) => { return CurrentUser.Instance.User != null; });
         #endregion
 
-        #region ViewModels 
-        private AuthorizationViewModel avm;
-        private RegistrationViewModel rvm = null;
-        private TasksViewModel tvm = null;
+        #region Logic
+        StartTurnOffPageDialogLogic stPage;
         #endregion
 
+        TasksViewModel tvm;
+        ChatViewModel cvm;
 
         public MainWindowViewModel()
         {
-            CurrentUser = null;
-
-            tvm = new TasksViewModel(this);
-
-            avm = new AuthorizationViewModel();
-            avm.AuthorizationEndEvent += (user) => 
-            {
-                CurrentUser = user;
-                ShowPage(tvm);
-            };
-            avm.RegistrationRequiredEvent += () =>
-            {
-                if (rvm == null)
-                {
-                    rvm = new RegistrationViewModel();
-                    rvm.CancelEvent += () =>
-                    {
-                        ShowPage(avm);
-                    };
-                    rvm.RegistrationCompleteEvent += () =>
-                    {
-                        ShowPage(avm);
-                    };
-                }
-                ShowPage(rvm);                
-            };
-
             CurrentPage = new PageDialog();
-            ShowPage(avm);
+            stPage = new StartTurnOffPageDialogLogic(this);
+            stPage.EndEvent += (res) => {
+                if (res == PageDialogResult.Completed)
+                {
+                    tvm = new TasksViewModel(this);
+                    cvm = new ChatViewModel();
+                    CurrentPage.ShowPage(tvm);
+                }
+                else
+                    throw new NotImplementedException("Диалог авторизации не должен возвращать отмену");
+            };
+            stPage.StartDialog();
         }
 
         public void ShowPage(IPageDialog page)
         {
+            page.UpdatePropertyes();
             CurrentPage.ShowPage(page);
         }
     }

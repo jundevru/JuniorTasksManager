@@ -44,5 +44,10 @@ namespace TasksManagerClient.ViewModel
                 Access = WorkTaskAccess.OnlyPerformers
             };
         }
+
+        public void UpdatePropertyes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

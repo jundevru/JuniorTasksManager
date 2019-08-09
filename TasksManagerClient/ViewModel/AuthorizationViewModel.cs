@@ -42,7 +42,7 @@ namespace TasksManagerClient.ViewModel
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки пользователей: " + ex.Message);
+                Statics.LogManager.Logger.Write("Ошибка загрузки пользователей", ex);
                 return;
             }             
             if (user == null)
@@ -71,5 +71,9 @@ namespace TasksManagerClient.ViewModel
             RegistrationRequiredEvent?.Invoke();
         }, (obj) => { return true; });
 
+        public void UpdatePropertyes()
+        {
+            //
+        }
     }
 }

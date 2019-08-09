@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Input;
 using TasksManagerClient.Model;
 using TasksManagerClient.Dialogs;
+using TasksManagerClient.Statics;
+using TasksManagerClient.ApplicationLogic;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -44,16 +46,25 @@ namespace TasksManagerClient.ViewModel
         }
 
         #region ICommands
+        /// <summary>
+        /// Новая задача
+        /// </summary>
         public ICommand NewTaskCommand => new Helpers.CommandsDelegate((obj)=>
         {
-
-        },(obj)=> { return true; });
-        #endregion
-
+            newTaskLogic.StartDialog();
+        },(obj)=> { return true; });      
+        /// <summary>
+        /// Редактировать задачу
+        /// </summary>
         public ICommand EditTaskCommand => new Helpers.CommandsDelegate((obj) =>
         {
 
         }, (obj) => { return CurrentTask != null; });
+        #endregion
+
+        #region Logic
+        NewTaskPageDialogLogic newTaskLogic;
+        #endregion
 
         public string Title => "Список задач";
         private IPageDialogPresenter presenter;
@@ -61,21 +72,33 @@ namespace TasksManagerClient.ViewModel
         public TasksViewModel(IPageDialogPresenter presenter)
         {
             this.presenter = presenter;
-            //UpdateTasks();
+            newTaskLogic = new NewTaskPageDialogLogic(presenter);
+            newTaskLogic.EndEvent += (res) => 
+            {
+                if (res == PageDialogResult.Completed)
+                {
+                    // Добавлен диалог
+                    throw new NotImplementedException("Передать обновление по чату");
+                    UpdatePropertyes();
+                }
+                else
+                    presenter.ShowPage(this);
+            };
+            UpdatePropertyes();
         }
-        private void UpdateTasks()
+
+        public void UpdatePropertyes()
         {
             try
             {
-                throw new NotImplementedException("111");
-                //DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == "Выбрать по текущему юзеру" || t.Performers.FirstOrDefault(p=> p.User.ID == "Выбрать по текущему юзеру") != null).Load();
-                //WorkTasks = DB.TaskDataBase.Instance.WorkTasks.Local;
+                DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
+                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null).Load();
+                WorkTasks = DB.TaskDataBase.Instance.WorkTasks.Local;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки списка задач: " + ex.Message);
+                LogManager.Logger.Write("Ошибка загрузки списка задач", ex);
             }
         }
-
     }
 }

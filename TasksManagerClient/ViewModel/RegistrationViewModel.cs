@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,31 +9,73 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TasksManagerClient.Dialogs;
+using TasksManagerClient.Helpers;
+using TasksManagerClient.Model;
+using TasksManagerClient.Statics;
 
 namespace TasksManagerClient.ViewModel
 {
-    class RegistrationViewModel : DependencyObject, IPageDialog
+    class RegistrationViewModel : Notifier, IPageDialog
     {
         public string Title => "Регистрация";
 
         public event Action RegistrationCompleteEvent;
         public event Action CancelEvent;
 
+        private string login;
         public string Login
         {
-            get { return (string)GetValue(LoginProperty); }
-            set { SetValue(LoginProperty, value); }
+            get { return login; }
+            set
+            {
+                login = value;
+                RaisePropertyChanged();
+            }
         }
-        public static readonly DependencyProperty LoginProperty =
-            DependencyProperty.Register("Login", typeof(string), typeof(RegistrationViewModel), new PropertyMetadata(""));
 
+        private string fio;
         public string FIO
         {
-            get { return (string)GetValue(FIOProperty); }
-            set { SetValue(FIOProperty, value); }
+            get { return fio; }
+            set
+            {
+                fio = value;
+                RaisePropertyChanged();
+            }
         }
-        public static readonly DependencyProperty FIOProperty =
-            DependencyProperty.Register("FIO", typeof(string), typeof(RegistrationViewModel), new PropertyMetadata(""));
+
+        private ObservableCollection<UserGroup> groups;
+        public ObservableCollection<UserGroup> Groups
+        {
+            get { return groups; }
+            set
+            {
+                groups = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private UserGroup selectedGroup;
+        public UserGroup SelectedGroup
+        {
+            get { return selectedGroup; }
+            set
+            {
+                selectedGroup = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string groupText;
+        public string GroupText
+        {
+            get { return groupText; }
+            set
+            {
+                groupText = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ICommand Registration => new Helpers.CommandsDelegate((obj) =>
         {
@@ -56,11 +100,34 @@ namespace TasksManagerClient.ViewModel
                 MessageBox.Show("Пароль должен состоять из символов латинского алфавита, больших и маленьких и содержать цифру.");
                 return;
             }
+            if (SelectedGroup == null && string.IsNullOrEmpty(GroupText))
+            {
+                MessageBox.Show("Необходимо указать группу");
+                return;
+            }
+
+            UserGroup group;
+            if (!string.IsNullOrEmpty(GroupText))
+            {
+                var fGroup = DB.TaskDataBase.Instance.Groups.ToList().FirstOrDefault((g) => g.Name.Equals(GroupText));
+                if (fGroup == null)
+                {
+                    group = new UserGroup() { Name = GroupText };
+                    DB.TaskDataBase.Instance.Groups.Add(group);
+                    if (!DB.TaskDataBase.Instance.SafeSaveChanges())
+                        return;
+                }
+                else
+                    group = fGroup;
+            }
+            else
+                group = SelectedGroup;
             user = new Model.User()
             {
                 Login = Login,
                 FIO = FIO,
-                PasswordHash = Helpers.Utilits.GetHashString(password)
+                PasswordHash = Helpers.Utilits.GetHashString(password),
+                Group = group                
             };
             DB.TaskDataBase.Instance.Users.Add(user);
             if (!DB.TaskDataBase.Instance.SafeSaveChanges())
@@ -81,5 +148,18 @@ namespace TasksManagerClient.ViewModel
             return true;
         });
 
+        public void UpdatePropertyes()
+        {
+            try
+            {
+                DB.TaskDataBase.Instance.Groups.Load();
+                Groups = DB.TaskDataBase.Instance.Groups.Local;
+            }
+            catch(Exception ex)
+            {
+                LogManager.Logger.Write("Ошибка загрузки списка групп", ex);
+                return;
+            }
+        }
     }
 }

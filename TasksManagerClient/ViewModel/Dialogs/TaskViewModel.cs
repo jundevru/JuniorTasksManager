@@ -50,5 +50,10 @@ namespace TasksManagerClient.ViewModel
         {
             WorkTask = task;
         }
+
+        public void UpdatePropertyes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

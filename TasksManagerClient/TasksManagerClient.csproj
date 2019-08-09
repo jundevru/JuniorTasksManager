@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationLogic\IPageDialogLogic.cs" />
+    <Compile Include="ApplicationLogic\NewTaskPageDialogLogic.cs" />
+    <Compile Include="ApplicationLogic\StartTurnOffPageDialogLogic.cs" />
     <Compile Include="Dialogs\ChildDialog.cs" />
     <Compile Include="Dialogs\IChildDialog.cs" />
     <Compile Include="Dialogs\IPageDialog.cs" />
@@ -75,6 +78,11 @@
     <Compile Include="Helpers\ValueConverters\EnumToDescriptionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />
+    <Compile Include="Model\UserGroup.cs" />
+    <Compile Include="Statics\CurrentUser.cs" />
+    <Compile Include="Logs\ILogger.cs" />
+    <Compile Include="Logs\MessageBoxLogger.cs" />
+    <Compile Include="Statics\LogManager.cs" />
     <Compile Include="ViewModel\Dialogs\SelectUserViewModel.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />
@@ -222,6 +230,7 @@
   <ItemGroup>
     <Resource Include="CurrentStep.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

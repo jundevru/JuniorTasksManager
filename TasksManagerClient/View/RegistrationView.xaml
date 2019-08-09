@@ -24,7 +24,14 @@
             <PasswordBox x:Name="passtb"/>
             <TextBlock Text="ФИО:"/>
             <TextBox Text="{Binding FIO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Text="ФИО:" Visibility="Hidden"/>
+            <TextBlock Text="Выберите группу:"/>
+            <ComboBox SelectedItem="{Binding SelectedGroup}"
+                      ItemsSource="{Binding Groups}"
+                      DisplayMemberPath="Name"/>
+            <TextBlock Text="или создайте новую:"/>
+            <TextBox Text="{Binding GroupText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <TextBlock Text="___" Visibility="Hidden"/>
             <Button Content="Регистрация" Command="{Binding Registration}" CommandParameter="{Binding ElementName=passtb}"/>
             <Button Content="Авторизация" Command="{Binding BackCancel}"/>
         </StackPanel>

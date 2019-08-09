@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TasksManagerClient"
+        xmlns:sing="clr-namespace:TasksManagerClient.Statics"
         mc:Ignorable="d"
         Title="{Binding CurrentPage.Title}" Height="600" Width="800">
     <Grid>
@@ -18,7 +18,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}">
-                    <TextBlock Text="{Binding CurrentUser.FIO}"/>
+                    <TextBlock Text="{Binding Source={x:Static sing:CurrentUser.Instance}, Path=User.FIO}"/>
                     <Button Content="Задачи" Command="{Binding TaskCommand}"/>
                     <Button Content="Сообщения" Command="{Binding MessagesCommand}"/>
                 </StackPanel>

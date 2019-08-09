@@ -43,5 +43,10 @@ namespace TasksManagerClient.ViewModel
         {
             Period = DateTime.Now;
         }
+
+        public void UpdatePropertyes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

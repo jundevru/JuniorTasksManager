@@ -62,5 +62,7 @@ namespace TasksManagerClient.Model
             }
         }
 
+        public virtual UserGroup Group { get; set; }
+
     }
 }

@@ -20,6 +20,7 @@ namespace TasksManagerClient.DB
         public DbSet<User> Users { get; set; }
         public DbSet<Performer> Perfomers { get; set; }
         public DbSet<WorkTask> WorkTasks { get; set; }
+        public DbSet<UserGroup> Groups { get; set; }
 
         public bool SafeSaveChanges()
         {

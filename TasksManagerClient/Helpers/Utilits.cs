@@ -24,7 +24,7 @@ namespace TasksManagerClient.Helpers
         }
         public static bool PasswordIsValid(string s)
         {
-            return !string.IsNullOrEmpty(s) && Regex.IsMatch(s, @"[a-z]") && Regex.IsMatch(s, @"[A-Z]") && Regex.IsMatch(s, @"[0-9]") && !Regex.IsMatch(s, @"[а-яА-Я]");
+            return !string.IsNullOrEmpty(s) && !Regex.IsMatch(s, @"[а-яА-Я]"); //Regex.IsMatch(s, @"[a-z]") && Regex.IsMatch(s, @"[A-Z]") && Regex.IsMatch(s, @"[0-9]") &&
         }
     }
 }

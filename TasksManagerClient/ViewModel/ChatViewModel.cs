@@ -31,5 +31,19 @@ namespace TasksManagerClient.ViewModel
             throw new NotImplementedException("Не реализована отправка сообщений");
         },(obj)=> {return isConnected; });
 
+        public ChatViewModel()
+        {
+
+        }
+
+        public void Disconnect()
+        {
+
+        }
+
+        public void UpdatePropertyes()
+        {
+            //
+        }
     }
 }
