@@ -8,16 +8,16 @@
              d:DesignHeight="480" d:DesignWidth="640">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Текст резолюции исполнителю:"/>
         <TextBox Grid.Row="1"
-                 Text="{Binding Message}"
+                 Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap"/>
 
         <TextBlock Grid.Row="2" 
@@ -31,6 +31,10 @@
                     Content="Готово"
                     HorizontalAlignment="Right"
                     Command="{Binding CompleteCommand}"/>
+            <Button DockPanel.Dock="Right"
+                    Content="Назад"
+                    HorizontalAlignment="Right"
+                    Command="{Binding CancelCommand}"/>
         </DockPanel>
     </Grid>
 </UserControl>

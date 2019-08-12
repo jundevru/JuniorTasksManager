@@ -74,7 +74,9 @@ namespace TasksManagerClient.ViewModel
                 if (res == PageDialogResult.Completed)
                 {
                     tvm = new TasksViewModel(this);
+                    UpdatesMessagesManager.Instance.Add(tvm);
                     cvm = new ChatViewModel();
+                    UpdatesMessagesManager.Instance.Add(cvm);
                     CurrentPage.ShowPage(tvm);
                 }
                 else

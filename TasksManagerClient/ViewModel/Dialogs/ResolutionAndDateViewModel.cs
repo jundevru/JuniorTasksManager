@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using TasksManagerClient.ApplicationLogic;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -11,6 +13,7 @@ namespace TasksManagerClient.ViewModel
     {
         public string Title => "Укажите резолюцию и срок исполнения";
 
+        public event Action<PageDialogResult> PerfomerResult;
 
         private string message;
         public string Message
@@ -36,8 +39,14 @@ namespace TasksManagerClient.ViewModel
 
         public ICommand CompleteCommand => new Helpers.CommandsDelegate((obj) =>
         {
-
+            PerfomerResult?.Invoke(PageDialogResult.Completed);
+        }, (obj) => !string.IsNullOrEmpty(Message));
+        public ICommand CancelCommand => new Helpers.CommandsDelegate((obj) =>
+        {
+            PerfomerResult?.Invoke(PageDialogResult.Canceled);
         }, (obj) => true);
+        
+
 
         public ResolutionAndDateViewModel()
         {
@@ -46,7 +55,7 @@ namespace TasksManagerClient.ViewModel
 
         public void UpdatePropertyes()
         {
-            throw new NotImplementedException();
+            //
         }
     }
 }

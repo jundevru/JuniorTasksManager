@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TasksManagerClient.Dialogs;
+using TasksManagerClient.Statics;
 
 namespace TasksManagerClient.ViewModel
 {
-    class ChatViewModel : Helpers.Notifier, IPageDialog
+    class ChatViewModel : Helpers.Notifier, IPageDialog, IUpdateSenderReceiver
     {
         public string Title => "Сообщения";
 
@@ -23,6 +24,8 @@ namespace TasksManagerClient.ViewModel
             }
         }
         private bool isConnected = false;
+
+        public event Action ReceiveUpdate;
 
         public ICommand SendMessageCommand => new Helpers.CommandsDelegate((obj) => 
         {
@@ -42,6 +45,11 @@ namespace TasksManagerClient.ViewModel
         }
 
         public void UpdatePropertyes()
+        {
+            //
+        }
+
+        public void SendUpdate()
         {
             //
         }

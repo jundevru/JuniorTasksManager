@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TasksManagerClient.Model;
 using TasksManagerClient.Dialogs;
+using TasksManagerClient.ApplicationLogic;
+using TasksManagerClient.Statics;
 
 namespace TasksManagerClient.ViewModel
 {
     class NewTaskViewModel : Helpers.Notifier, IPageDialog
     {
+        public event Action<PageDialogResult> CreateResult;
         public string Title => "Новая задача";
 
         private WorkTask newTask;
@@ -26,13 +29,12 @@ namespace TasksManagerClient.ViewModel
 
         public ICommand CancelCreateCommand => new Helpers.CommandsDelegate((obj)=> 
         {
-
+            CreateResult?.Invoke(PageDialogResult.Canceled);
         },(obj)=> {return true; });
 
         public ICommand CreateCommand => new Helpers.CommandsDelegate((obj)=> 
-        {
-            // Сохранить, добавив себя как первого исполнителя
-            // Если задача не личная, перейти к добавлению прочих исполнителей - окно редактирования
+        {        
+            CreateResult?.Invoke(PageDialogResult.Completed);
         }, (obj)=> { return true; });
 
         public NewTaskViewModel()
@@ -41,13 +43,14 @@ namespace TasksManagerClient.ViewModel
             {
                 Message = "Введите текст задачи",
                 Priority = WorkTaskPriority.Normal,
-                Access = WorkTaskAccess.OnlyPerformers
+                Access = WorkTaskAccess.OnlyPerformers,
+                User = CurrentUser.Instance.User
             };
         }
 
         public void UpdatePropertyes()
         {
-            throw new NotImplementedException();
+            //
         }
     }
 }

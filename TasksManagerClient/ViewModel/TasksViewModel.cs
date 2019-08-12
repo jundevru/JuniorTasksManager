@@ -14,7 +14,7 @@ using TasksManagerClient.ApplicationLogic;
 
 namespace TasksManagerClient.ViewModel
 {
-    class TasksViewModel : Helpers.Notifier, IPageDialog
+    class TasksViewModel : Helpers.Notifier, IPageDialog, IUpdateSenderReceiver
     {
         private ObservableCollection<WorkTask> tasks;
         /// <summary>
@@ -69,6 +69,8 @@ namespace TasksManagerClient.ViewModel
         public string Title => "Список задач";
         private IPageDialogPresenter presenter;
 
+        public event Action ReceiveUpdate;
+
         public TasksViewModel(IPageDialogPresenter presenter)
         {
             this.presenter = presenter;
@@ -77,12 +79,10 @@ namespace TasksManagerClient.ViewModel
             {
                 if (res == PageDialogResult.Completed)
                 {
-                    // Добавлен диалог
-                    throw new NotImplementedException("Передать обновление по чату");
+                    ReceiveUpdate?.Invoke();
                     UpdatePropertyes();
                 }
-                else
-                    presenter.ShowPage(this);
+                presenter.ShowPage(this);
             };
             UpdatePropertyes();
         }
@@ -91,14 +91,22 @@ namespace TasksManagerClient.ViewModel
         {
             try
             {
-                DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
-                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null).Load();
-                WorkTasks = DB.TaskDataBase.Instance.WorkTasks.Local;
+                DB.TaskDataBase.Instance.WorkTasks.Load();
+                //.Where((t) => t.User.ID == CurrentUser.Instance.User.ID 
+                //|| t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
+                WorkTasks = (ObservableCollection<WorkTask>)DB.TaskDataBase.Instance.WorkTasks.Local.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
+                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null);
+                MessageBox.Show(CurrentUser.Instance.User.ID + ", " +WorkTasks.Count);
             }
             catch (Exception ex)
             {
                 LogManager.Logger.Write("Ошибка загрузки списка задач", ex);
             }
+        }
+
+        public void SendUpdate()
+        {
+            //
         }
     }
 }

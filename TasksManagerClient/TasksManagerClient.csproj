@@ -82,7 +82,9 @@
     <Compile Include="Statics\CurrentUser.cs" />
     <Compile Include="Logs\ILogger.cs" />
     <Compile Include="Logs\MessageBoxLogger.cs" />
+    <Compile Include="Statics\IUpdateSenderReceiver.cs" />
     <Compile Include="Statics\LogManager.cs" />
+    <Compile Include="Statics\UpdatesMessagesManager.cs" />
     <Compile Include="ViewModel\Dialogs\SelectUserViewModel.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />

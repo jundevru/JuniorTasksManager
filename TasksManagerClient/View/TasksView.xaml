@@ -13,6 +13,8 @@
         </Grid.RowDefinitions>
         <WrapPanel>
             <Button Content="Новая задача" Command="{Binding NewTaskCommand}"/>
+            <TextBlock Text="Всего задач:"/>
+            <TextBlock Text="{Binding Path=WorkTasks.Count}"/>
         </WrapPanel>
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding WorkTasks}"
@@ -24,8 +26,8 @@
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditTaskCommand}"/>
                         </Grid.InputBindings>
                         <!-- Шаблон напишу тут, т.к. биндинг двойного клика на команду нагляднее -->
-                        
-                        
+                        <TextBlock Text="{Binding Message}"/>
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
