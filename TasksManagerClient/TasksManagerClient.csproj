@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApplicationLogic\AddPerfomerDialogLogic.cs" />
     <Compile Include="ApplicationLogic\IPageDialogLogic.cs" />
     <Compile Include="ApplicationLogic\NewTaskPageDialogLogic.cs" />
     <Compile Include="ApplicationLogic\StartTurnOffPageDialogLogic.cs" />
@@ -75,9 +76,11 @@
     <Compile Include="Helpers\CommandDelegate.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\Utilits.cs" />
+    <Compile Include="Helpers\ValueConverters\DateTimeShortConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToDescriptionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\WorkTaskStatesToColorConverter.cs" />
     <Compile Include="Model\UserGroup.cs" />
     <Compile Include="Statics\CurrentUser.cs" />
     <Compile Include="Logs\ILogger.cs" />
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dictionaryes\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionaryes\ListBoxs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

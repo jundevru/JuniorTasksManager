@@ -5,5 +5,11 @@
     <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <local:EnumToCollectionConverter x:Key="EnumToCollectionConverter" x:Shared ="False"/>
     <local:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" x:Shared ="False"/>
+    <local:DateTimeShortConverter x:Key="DateTimeShortConverter" x:Shared ="False"/>
+    <local:WorkTaskStatesToColorConverter x:Key="WorkTaskStatesToColorConverter"  x:Shared ="False"
+                                           CancelBrush="DarkRed"
+                                           CompletteBrush="Green"
+                                           ErrorBrush="Red"
+                                           WorkBrush="Orange"/>
 
 </ResourceDictionary>

@@ -56,14 +56,19 @@ namespace TasksManagerClient.ViewModel
         /// <summary>
         /// Редактировать задачу
         /// </summary>
-        public ICommand EditTaskCommand => new Helpers.CommandsDelegate((obj) =>
+        public ICommand AddPerfomer => new Helpers.CommandsDelegate((obj) =>
         {
-
-        }, (obj) => { return CurrentTask != null; });
+            addPerfomerLogic = new AddPerformerDialogLogic(presenter, CurrentTask);
+            addPerfomerLogic.EndEvent += EndDialogResult;
+            addPerfomerLogic.StartDialog();
+        }, (obj) => { return CurrentTask != null
+            && CurrentUser.Instance.User != null
+            && CurrentTask.User.ID == CurrentUser.Instance.User.ID; });
         #endregion
 
         #region Logic
         NewTaskPageDialogLogic newTaskLogic;
+        AddPerformerDialogLogic addPerfomerLogic;
         #endregion
 
         public string Title => "Список задач";
@@ -75,28 +80,34 @@ namespace TasksManagerClient.ViewModel
         {
             this.presenter = presenter;
             newTaskLogic = new NewTaskPageDialogLogic(presenter);
-            newTaskLogic.EndEvent += (res) => 
-            {
-                if (res == PageDialogResult.Completed)
-                {
-                    ReceiveUpdate?.Invoke();
-                    UpdatePropertyes();
-                }
-                presenter.ShowPage(this);
-            };
+            newTaskLogic.EndEvent += EndDialogResult;
             UpdatePropertyes();
+        }
+
+        private void EndDialogResult(PageDialogResult result)
+        {
+            if (result == PageDialogResult.Completed)
+            {
+                ReceiveUpdate?.Invoke();
+                UpdatePropertyes();
+            }
+            presenter.ShowPage(this);
         }
 
         public void UpdatePropertyes()
         {
             try
             {
+                //DB.TaskDataBase.Instance.WorkTasks.AsNoTracking();
                 DB.TaskDataBase.Instance.WorkTasks.Load();
                 //.Where((t) => t.User.ID == CurrentUser.Instance.User.ID 
                 //|| t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
-                WorkTasks = (ObservableCollection<WorkTask>)DB.TaskDataBase.Instance.WorkTasks.Local.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
-                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null);
-                MessageBox.Show(CurrentUser.Instance.User.ID + ", " +WorkTasks.Count);
+                List<WorkTask> tasks = DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
+                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
+                .Include(t=>t.Performers)   // Загрузка вложенных данных внутри типа WorkTask, в данном случае списка исполнителей. (По умолчанию virtual не грузятся)
+                .ToList();
+                WorkTasks = new ObservableCollection<WorkTask>(tasks);
+                //MessageBox.Show(CurrentUser.Instance.User.ID + ", " + WorkTasks.Count);
             }
             catch (Exception ex)
             {

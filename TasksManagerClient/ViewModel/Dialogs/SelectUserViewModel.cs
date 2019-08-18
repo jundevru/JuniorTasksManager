@@ -15,6 +15,8 @@ namespace TasksManagerClient.ViewModel
     {
         public string Title => "Выберите исполнителя";
 
+        public event Action<bool> UserResult;
+
         private ObservableCollection<User> users;
         public ObservableCollection<User> Users
         {
@@ -39,12 +41,12 @@ namespace TasksManagerClient.ViewModel
 
         public ICommand NextCommand => new Helpers.CommandsDelegate((obj) =>
         {
-
-        }, (obj) => { return true; });
+            UserResult?.Invoke(true);
+        }, (obj) => { return SelectedUser != null; });
 
         public ICommand BackCommand => new Helpers.CommandsDelegate((obj) =>
         {
-
+            UserResult?.Invoke(false);
         }, (obj) => { return true; });
 
         public SelectUserViewModel()

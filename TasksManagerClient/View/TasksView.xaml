@@ -13,6 +13,7 @@
         </Grid.RowDefinitions>
         <WrapPanel>
             <Button Content="Новая задача" Command="{Binding NewTaskCommand}"/>
+            <Button Content="Добавить исполнителя" Command="{Binding AddPerfomer}"/>
             <TextBlock Text="Всего задач:"/>
             <TextBlock Text="{Binding Path=WorkTasks.Count}"/>
         </WrapPanel>
@@ -26,8 +27,22 @@
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding EditTaskCommand}"/>
                         </Grid.InputBindings>
                         <!-- Шаблон напишу тут, т.к. биндинг двойного клика на команду нагляднее -->
-                        <TextBlock Text="{Binding Message}"/>
-
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding Message}"/>
+                        <Expander Grid.Column="1">
+                            <ListBox ItemsSource="{Binding Performers}"
+                                     ItemTemplate="{StaticResource TaskPerformetsTemplate}"/>
+                        </Expander>
+                        <WrapPanel Grid.Column="2">
+                            <TextBlock Text="Performers:"/>
+                            <TextBlock Text="{Binding Performers.Count}"/>
+                        </WrapPanel>
+                        
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
