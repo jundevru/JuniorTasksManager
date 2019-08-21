@@ -1,8 +1,5 @@
-﻿using System;
+﻿// Менеджер обработки сообщений об обновлении данных и рассылки их получателям
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TasksManagerClient.Statics
 {

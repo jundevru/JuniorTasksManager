@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="TasksManagerClient.View.Dialogs.EditTaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TasksManagerClient.View.Dialogs"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ListBox ItemsSource="{Binding Performers}"
+                 ItemTemplate="{StaticResource TaskPerformetsTemplate}">
+            
+        </ListBox>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox Text="{Binding CompletteComent, UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Исполнено"
+                    Command="{Binding CompletteCommand}"/>
+                <Button Grid.Column="1" 
+                    Content="Отменить"
+                    Command="{Binding CancelTaskCommand}"/>
+            </Grid>
+            
+        </Grid>
+        <DockPanel Grid.Row="2">
+        <Button DockPanel.Dock="Right"
+                HorizontalAlignment="Right"
+                Content="Назад"
+                Command="{Binding CancelCommand}"/>
+        </DockPanel>
+    </Grid>
+</UserControl>

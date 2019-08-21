@@ -74,6 +74,19 @@ namespace TasksManagerClient.Model
             }
         }
 
+        private WorkTaskStates state;
+        /// <summary>
+        /// Текущий статус исполнения
+        /// </summary>
+        public WorkTaskStates State
+        {
+            get { return state; }
+            set
+            {
+                state = value;
+                RaisePropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Автор задачи

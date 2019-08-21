@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using TasksManagerClient.Dialogs;
+using TasksManagerClient.Helpers;
 using TasksManagerClient.Model;
 
 namespace TasksManagerClient.ViewModel
 {
-    class SelectUserViewModel : Helpers.Notifier, Dialogs.IPageDialog
+    class SelectUserViewModel : Notifier, IPageDialog
     {
         public string Title => "Выберите исполнителя";
 

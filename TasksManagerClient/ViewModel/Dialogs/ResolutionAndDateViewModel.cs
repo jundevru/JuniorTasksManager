@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TasksManagerClient.ApplicationLogic;
+using TasksManagerClient.Dialogs;
+using TasksManagerClient.Helpers;
 
 namespace TasksManagerClient.ViewModel
 {
-    class ResolutionAndDateViewModel : Helpers.Notifier, Dialogs.IPageDialog
+    class ResolutionAndDateViewModel : Notifier, IPageDialog
     {
         public string Title => "Укажите резолюцию и срок исполнения";
 

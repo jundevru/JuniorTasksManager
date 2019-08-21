@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
 
     <DataTemplate x:Key="TaskPerformetsTemplate" >
-        <Border Background="{Binding State, Converter={StaticResource WorkTaskStatesToColorConverter}}">
+        <Border >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -11,13 +11,21 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding User.FIO}"/>
-                <TextBlock Grid.Column="1" 
-                           Text="{Binding Message}"/>
+                <Border Grid.Column="0"
+                        Background="{Binding State, Converter={StaticResource WorkTaskStatesToColorConverter}}">
+                    <TextBlock Text="{Binding State, Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </Border>
+                <WrapPanel Grid.Column="1">
+                    <TextBlock Text="Исп:"/>
+                    <TextBlock Text="{Binding User.FIO}"/>
+                </WrapPanel>
                 <TextBlock Grid.Column="2" 
-                           Text="{Binding PeriodOfExecution, Converter={StaticResource DateTimeShortConverter}}"/>
-                <TextBlock Grid.Column="3"
-                           Text="{Binding State, Converter={StaticResource EnumToDescriptionConverter}}"/>
+                           Text="{Binding Message, Converter={StaticResource SplitCommentConverter}}"/>
+                <WrapPanel Grid.Column="3">
+                    <TextBlock Text="Срок:"/>
+                    <TextBlock Text="{Binding PeriodOfExecution, Converter={StaticResource DateTimeShortConverter}}"/>
+                </WrapPanel>
+                                         
             </Grid>
         </Border>
     </DataTemplate>

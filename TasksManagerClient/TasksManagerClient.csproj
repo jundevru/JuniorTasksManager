@@ -67,6 +67,7 @@
     <Compile Include="ApplicationLogic\AddPerfomerDialogLogic.cs" />
     <Compile Include="ApplicationLogic\IPageDialogLogic.cs" />
     <Compile Include="ApplicationLogic\NewTaskPageDialogLogic.cs" />
+    <Compile Include="ApplicationLogic\EditTaskDialogLogic.cs" />
     <Compile Include="ApplicationLogic\StartTurnOffPageDialogLogic.cs" />
     <Compile Include="Dialogs\ChildDialog.cs" />
     <Compile Include="Dialogs\IChildDialog.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Helpers\ValueConverters\EnumToDescriptionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\SplitCommentConverter.cs" />
     <Compile Include="Helpers\ValueConverters\WorkTaskStatesToColorConverter.cs" />
     <Compile Include="Model\UserGroup.cs" />
     <Compile Include="Statics\CurrentUser.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Statics\IUpdateSenderReceiver.cs" />
     <Compile Include="Statics\LogManager.cs" />
     <Compile Include="Statics\UpdatesMessagesManager.cs" />
+    <Compile Include="ViewModel\Dialogs\EditTaskViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\SelectUserViewModel.cs" />
     <Compile Include="ViewModel\AuthorizationViewModel.cs" />
     <Compile Include="ViewModel\ChatViewModel.cs" />
@@ -104,6 +107,9 @@
     </Compile>
     <Compile Include="View\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialogs\EditTaskView.xaml.cs">
+      <DependentUpon>EditTaskView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Dialogs\SelectUserView.xaml.cs">
       <DependentUpon>SelectUserView.xaml</DependentUpon>
@@ -156,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ChatView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\EditTaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

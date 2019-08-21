@@ -84,5 +84,11 @@ namespace TasksManagerClient.Model
         /// </summary>
         public virtual WorkTask WorkTask { get; set; }
 
+
+        public void AddMessage(string message)
+        {
+            Message += "#" + message;
+        }
+
     }
 }

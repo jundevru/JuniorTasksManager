@@ -11,5 +11,6 @@
                                            CompletteBrush="Green"
                                            ErrorBrush="Red"
                                            WorkBrush="Orange"/>
+    <local:SplitCommentConverter x:Key="SplitCommentConverter" x:Shared="False"/>
 
 </ResourceDictionary>

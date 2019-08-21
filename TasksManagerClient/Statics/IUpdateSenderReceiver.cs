@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Отправитель/получатель информации об обновлении данных в базе
+using System;
 
 namespace TasksManagerClient.Statics
 {

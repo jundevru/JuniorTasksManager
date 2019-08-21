@@ -44,7 +44,8 @@ namespace TasksManagerClient.ViewModel
                 Message = "Введите текст задачи",
                 Priority = WorkTaskPriority.Normal,
                 Access = WorkTaskAccess.OnlyPerformers,
-                User = CurrentUser.Instance.User
+                User = CurrentUser.Instance.User,
+                State = WorkTaskStates.Work
             };
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using TasksManagerClient.Dialogs;
 using TasksManagerClient.Statics;
@@ -51,7 +52,16 @@ namespace TasksManagerClient.ViewModel
 
         public void SendUpdate()
         {
-            //
+            // Отправить обновление в сеть
+            MessageBox.Show("Отправляем обновление в сеть");
+        }
+        public void ReceivedUpdate()
+        {
+            // Принято обновление из сети
+            Application.Current.Dispatcher.Invoke(() => {
+                ReceiveUpdate?.Invoke();
+                MessageBox.Show("Получено обновление из сети");
+            });
         }
     }
 }

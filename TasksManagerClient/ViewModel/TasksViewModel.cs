@@ -11,6 +11,7 @@ using TasksManagerClient.Model;
 using TasksManagerClient.Dialogs;
 using TasksManagerClient.Statics;
 using TasksManagerClient.ApplicationLogic;
+using TasksManagerClient.Helpers;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -52,9 +53,10 @@ namespace TasksManagerClient.ViewModel
         public ICommand NewTaskCommand => new Helpers.CommandsDelegate((obj)=>
         {
             newTaskLogic.StartDialog();
-        },(obj)=> { return true; });      
+        },(obj)=> { return true; });  
+            
         /// <summary>
-        /// Редактировать задачу
+        /// Добавить исполнителя
         /// </summary>
         public ICommand AddPerfomer => new Helpers.CommandsDelegate((obj) =>
         {
@@ -63,12 +65,46 @@ namespace TasksManagerClient.ViewModel
             addPerfomerLogic.StartDialog();
         }, (obj) => { return CurrentTask != null
             && CurrentUser.Instance.User != null
+            && CurrentTask.State == WorkTaskStates.Work
             && CurrentTask.User.ID == CurrentUser.Instance.User.ID; });
+
+        /// <summary>
+        /// Редактировать задачу, исполнителям
+        /// </summary>
+        public ICommand EditTaskCommand => new Helpers.CommandsDelegate((obj)=>         
+        {
+            editTaskLogic = new EditTaskDialogLogic(presenter, CurrentTask);
+            editTaskLogic.EndEvent += EndDialogResult;
+            editTaskLogic.StartDialog();
+        },(obj)=> { return CurrentTask != null; });
+
+        private WorkTaskStates stateFilter = WorkTaskStates.Work;
+        private string stateFilterButtonText = EnumHelper.GetDescription(WorkTaskStates.Work);
+        public string StateFilterButtonText
+        {
+            get { return stateFilterButtonText; }
+            set
+            {
+                stateFilterButtonText = value;
+                RaisePropertyChanged();
+            }
+        }
+        public ICommand StateFilterCommand => new Helpers.CommandsDelegate((obj) =>
+        {
+            int state = (int)stateFilter;
+            state++;
+            if (state > 2)
+                state = 0;
+            stateFilter = (WorkTaskStates)state;
+            StateFilterButtonText = EnumHelper.GetDescription(stateFilter);
+            UpdatePropertyes();
+        }, null);
         #endregion
 
         #region Logic
         NewTaskPageDialogLogic newTaskLogic;
         AddPerformerDialogLogic addPerfomerLogic;
+        EditTaskDialogLogic editTaskLogic;
         #endregion
 
         public string Title => "Список задач";
@@ -98,16 +134,12 @@ namespace TasksManagerClient.ViewModel
         {
             try
             {
-                //DB.TaskDataBase.Instance.WorkTasks.AsNoTracking();
                 DB.TaskDataBase.Instance.WorkTasks.Load();
-                //.Where((t) => t.User.ID == CurrentUser.Instance.User.ID 
-                //|| t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
-                List<WorkTask> tasks = DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
-                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
+                List<WorkTask> tasks = DB.TaskDataBase.Instance.WorkTasks.Where((t) => (t.User.ID == CurrentUser.Instance.User.ID
+                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null) && t.State == stateFilter)
                 .Include(t=>t.Performers)   // Загрузка вложенных данных внутри типа WorkTask, в данном случае списка исполнителей. (По умолчанию virtual не грузятся)
                 .ToList();
                 WorkTasks = new ObservableCollection<WorkTask>(tasks);
-                //MessageBox.Show(CurrentUser.Instance.User.ID + ", " + WorkTasks.Count);
             }
             catch (Exception ex)
             {
@@ -115,9 +147,10 @@ namespace TasksManagerClient.ViewModel
             }
         }
 
+        // Получена информация о необходимости обновить данные
         public void SendUpdate()
         {
-            //
+            UpdatePropertyes();
         }
     }
 }
