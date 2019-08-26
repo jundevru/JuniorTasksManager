@@ -66,6 +66,7 @@ namespace TasksManagerClient.ViewModel
         }, (obj) => { return CurrentTask != null
             && CurrentUser.Instance.User != null
             && CurrentTask.State == WorkTaskStates.Work
+            && CurrentTask.Access == WorkTaskAccess.OnlyPerformers
             && CurrentTask.User.ID == CurrentUser.Instance.User.ID; });
 
         /// <summary>

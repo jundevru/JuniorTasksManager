@@ -7,10 +7,10 @@
     <local:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter" x:Shared ="False"/>
     <local:DateTimeShortConverter x:Key="DateTimeShortConverter" x:Shared ="False"/>
     <local:WorkTaskStatesToColorConverter x:Key="WorkTaskStatesToColorConverter"  x:Shared ="False"
-                                           CancelBrush="DarkRed"
-                                           CompletteBrush="Green"
-                                           ErrorBrush="Red"
-                                           WorkBrush="Orange"/>
+                                           CancelBrush="#FFEC0000"
+                                           CompletteBrush="#FF00DC00"
+                                           ErrorBrush="#FF590000"
+                                           WorkBrush="#FFFFB327"/>
     <local:SplitCommentConverter x:Key="SplitCommentConverter" x:Shared="False"/>
 
 </ResourceDictionary>

@@ -7,6 +7,9 @@
     <SolidColorBrush x:Key="TopBackgroundColor" Color="#FF948FFF"/>
     <SolidColorBrush x:Key="DisableBackgroundColor" Color="Gray"/>
 
-    <SolidColorBrush x:Key="TextContentColor" Color="Black"/>
+    <SolidColorBrush x:Key="TextContentColor" Color="#222"/>
+    <SolidColorBrush x:Key="ImagesBorderColor" Color="#333"/>
+    <SolidColorBrush x:Key="ImagesFillColor" Color="#555"/>
+    <SolidColorBrush x:Key="InfoBorderFillColor" Color="#FFADAAF9"/>
 
 </ResourceDictionary>

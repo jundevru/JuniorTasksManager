@@ -29,5 +29,25 @@
             </Grid>
         </Border>
     </DataTemplate>
-    
+
+
+
+    <Style TargetType="ListBox">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Name="border_lbx"
+                        Background="#EEE"
+                        BorderBrush="{StaticResource ImagesBorderColor}"
+                        BorderThickness="0" CornerRadius="0"
+                        Margin="2">
+                        <ScrollViewer Focusable="False">
+                            <ItemsPresenter Margin="1"></ItemsPresenter>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

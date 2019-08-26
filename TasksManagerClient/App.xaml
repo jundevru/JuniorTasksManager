@@ -12,6 +12,10 @@
 
                 <ResourceDictionary Source="Dictionaryes\Converters.xaml"/>
 
+                <ResourceDictionary Source="Dictionaryes\Texts.xaml"/>
+
+                <ResourceDictionary Source="Dictionaryes\Borders.xaml"/>
+
                 <ResourceDictionary Source="Dictionaryes\Buttons.xaml"/>
                 <ResourceDictionary Source="Dictionaryes\DialogWindow.xaml"/>
 
