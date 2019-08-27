@@ -11,6 +11,7 @@ namespace TasksManagerClient.DB
 {
     class TaskDataBase : DbContext
     {
+        public static DateTime NullDate => new DateTime(1900, 01, 01);
         public static readonly TaskDataBase Instance = new TaskDataBase("HomeConnection");
         private TaskDataBase(string dbName)
             : base(dbName)

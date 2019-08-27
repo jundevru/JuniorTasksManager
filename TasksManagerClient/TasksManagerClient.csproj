@@ -78,6 +78,7 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\Utilits.cs" />
     <Compile Include="Helpers\ValueConverters\DateTimeShortConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\DateTimeToColorConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToDescriptionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />

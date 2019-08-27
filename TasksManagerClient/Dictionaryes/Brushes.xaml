@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
 
     <SolidColorBrush x:Key="LeftBackgroundColor" Color="#FF948FFF"/>
-    <SolidColorBrush x:Key="RightBackgroundColor" Color="White"/>
+    <SolidColorBrush x:Key="RightBackgroundColor" Color="#CCC"/>
     <SolidColorBrush x:Key="TopBackgroundColor" Color="#FF948FFF"/>
     <SolidColorBrush x:Key="DisableBackgroundColor" Color="Gray"/>
 
@@ -11,5 +11,10 @@
     <SolidColorBrush x:Key="ImagesBorderColor" Color="#333"/>
     <SolidColorBrush x:Key="ImagesFillColor" Color="#555"/>
     <SolidColorBrush x:Key="InfoBorderFillColor" Color="#FFADAAF9"/>
+
+    <SolidColorBrush x:Key="ComingAndWorkColor" Color="#FFFFB327"/>
+    <SolidColorBrush x:Key="ExpiriedAndCancelColor" Color="#FFEC0000"/>
+    <SolidColorBrush x:Key="NotRushAndCompletteColor" Color="#FF00DC00"/>
+
 
 </ResourceDictionary>

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using TasksManagerClient.Helpers;
+using TasksManagerClient.DB;
+using TasksManagerClient.Statics;
+using System.Linq;
 
 namespace TasksManagerClient.Model
 {
@@ -85,6 +90,17 @@ namespace TasksManagerClient.Model
             {
                 state = value;
                 RaisePropertyChanged();
+            }
+        }
+
+        [NotMapped]
+        public DateTime PeriodOfExecution
+        {
+            get
+            {
+                if (User == null || Performers == null)
+                    return TaskDataBase.NullDate;
+                return Performers.FirstOrDefault((p)=>p.User.ID == CurrentUser.Instance.User.ID).PeriodOfExecution;
             }
         }
 

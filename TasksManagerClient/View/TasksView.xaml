@@ -12,10 +12,14 @@
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <WrapPanel>
-            <TextBlock Text="Отображать:"/>
-            <Button Content="{Binding StateFilterButtonText}" Command="{Binding StateFilterCommand}"/>
-        </WrapPanel>
+
+        <Grid Grid.Row="0"
+              Height="50">
+            <WrapPanel>
+                <TextBlock Text="Отображать:"/>
+                <Button Content="{Binding StateFilterButtonText}" Command="{Binding StateFilterCommand}"/>
+            </WrapPanel>
+        </Grid>
         <WrapPanel Grid.Row="2">
             <Button Content="Новая задача" Command="{Binding NewTaskCommand}"/>
             <Button Content="Добавить исполнителя" Command="{Binding AddPerfomer}"/>
@@ -28,7 +32,10 @@
                  SelectedItem="{Binding CurrentTask}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border HorizontalAlignment="Stretch" Padding="5">
+                    <Border HorizontalAlignment="Stretch"
+                            Margin="2"
+                            Background="White"
+                            CornerRadius="3,3,3,3">
                         <Border.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" 
                                           Command="{Binding DataContext.EditTaskCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"/>
@@ -36,7 +43,9 @@
                         <!-- Шаблон напишу тут, т.к. биндинг двойного клика на команду нагляднее -->
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
@@ -45,33 +54,31 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <!-- Иконка -->
-                            <Border Grid.RowSpan="2"
-                                    Height="50" 
-                                    Width="50"
-                                    Margin="3"
+                            <!-- Полоска сбоку -->
+                            <Border Grid.Column="1" 
+                                    Width="28"
+                                    Height="40"
+                                    CornerRadius="0,0,2,2"
                                     Background="{Binding State, Converter={StaticResource WorkTaskStatesToColorConverter}}">
-                                <ContentControl Margin="3"
-                                                HorizontalAlignment="Stretch"
-                                                ToolTip="{Binding State, Converter={StaticResource EnumToDescriptionConverter}}"
+                                <ContentControl Margin="2"
+                                                Width="22"
+                                                Height="22"
+                                                VerticalAlignment="Bottom"
                                                 Content="{StaticResource IconSettings}"/>
                             </Border>
-                            
+
                             <!-- Сообщение -->
-                            <Border Grid.Column="1"
-                                    Grid.ColumnSpan="2"
-                                    Margin="3"
-                                    HorizontalAlignment="Stretch"
-                                    Style="{StaticResource InfoBorder}">
-                                <TextBlock TextWrapping="Wrap"
-                                           FontWeight="Bold"
-                                           Style="{StaticResource TextBlockBig}"
-                                           Text="{Binding Message}"/>
-                            </Border>
-                                  
+                            <TextBlock Grid.Column="2" 
+                                       Grid.ColumnSpan="3"
+                                       TextWrapping="Wrap"
+                                       FontWeight="Bold"
+                                       Style="{StaticResource TextBlockBig}"
+                                       Text="{Binding Message}"/>
+                            
                             <!-- Исполнитель -->
-                            <Border Grid.Column="1"
+                            <Border Grid.Column="2"
                                     Grid.Row="1"
+                                    HorizontalAlignment="Center"
                                     Style="{StaticResource InfoBorder}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -87,22 +94,46 @@
                                                Text="{Binding User.FIO}"/>
                                 </Grid>
                             </Border>
-                            
                             <!-- Доступ -->
-                            <Border Grid.Column="2" 
+                            <Border Grid.Column="4" 
                                     Grid.Row="1"
+                                    HorizontalAlignment="Center"
                                     Style="{StaticResource InfoBorder}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <ContentControl Grid.Column="0" 
+                                                    Height="18"
+                                                    Width="18"
+                                                    Content="{StaticResource IconUsers}"/>
                                     <TextBlock Grid.Column="1" 
                                                Style="{StaticResource TextBlockSmall}"
                                                Text="{Binding Access, Converter={StaticResource EnumToDescriptionConverter}}"/>
                                 </Grid>
                             </Border>
-                            
+                            <!-- Дата -->
+                            <Border Grid.Column="3" 
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    Background="{Binding PeriodOfExecution, Converter={StaticResource DateTimeToColorConverter}}"
+                                    Style="{StaticResource InfoBorder}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Grid.Column="0" 
+                                                    Height="18"
+                                                    Width="18"
+                                                    Content="{StaticResource IconTimer}"/>
+                                    <TextBlock Grid.Column="1" 
+                                               Style="{StaticResource TextBlockSmall}"
+                                               Text="{Binding PeriodOfExecution, Converter={StaticResource DateTimeShortConverter}}"/>
+                                </Grid>
+                            </Border>
+                        
                         </Grid>
                     </Border>
                 </DataTemplate>

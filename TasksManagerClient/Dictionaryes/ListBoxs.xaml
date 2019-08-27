@@ -38,8 +38,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
                     <Border Name="border_lbx"
-                        Background="#EEE"
-                        BorderBrush="{StaticResource ImagesBorderColor}"
+                        Background="{StaticResource RightBackgroundColor}"
+                        BorderBrush="Transparent"
                         BorderThickness="0" CornerRadius="0"
                         Margin="2">
                         <ScrollViewer Focusable="False">

@@ -5,6 +5,12 @@ using System.Security.Cryptography;
 
 namespace TasksManagerClient.Helpers
 {
+    public enum Ugrencys
+    {
+        Expiried,
+        Coming,
+        NotRush
+    }
     class Utilits
     {
         public static string GetHashString(string s)
@@ -25,6 +31,15 @@ namespace TasksManagerClient.Helpers
         public static bool PasswordIsValid(string s)
         {
             return !string.IsNullOrEmpty(s) && !Regex.IsMatch(s, @"[а-яА-Я]"); //Regex.IsMatch(s, @"[a-z]") && Regex.IsMatch(s, @"[A-Z]") && Regex.IsMatch(s, @"[0-9]") &&
+        }
+        public static Ugrencys DateTimeToUgrency(DateTime date)
+        {
+            int days = (date - DateTime.Now).Days;
+            if (days <= 1)
+                return Ugrencys.Expiried;
+            if (days > 1 && days > 2)
+                return Ugrencys.Coming;
+            return Ugrencys.NotRush;
         }
     }
 }
