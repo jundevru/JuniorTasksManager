@@ -32,4 +32,67 @@
             </Setter.Value>
         </Setter>
     </Style >
+
+    <Style x:Key="TextButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource TextContentColor}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="MinWidth" Value="80"/>
+        <Setter Property="MinHeight" Value="26"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="rootGrid">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0" To="1"
+                                                                 Storyboard.TargetName="bg_highlight"
+                                                                 Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0" To="0"
+                                                                 Storyboard.TargetName="bg_highlight"
+                                                                 Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0:0:0" To="1"
+                                                                 Storyboard.TargetName="bg_disabled"
+                                                                 Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Border x:Name="bg" 
+                                Background="{StaticResource LeftBackgroundColor}" 
+                                BorderThickness="0" CornerRadius="0"
+                                BorderBrush="{StaticResource TextContentColor}"/>
+                        <Border x:Name="bg_highlight" Opacity="0" 
+                                Background="{StaticResource TopBackgroundColor}" 
+                                BorderThickness="0" CornerRadius="0"
+                                BorderBrush="{StaticResource TextContentColor}"/>
+                        <Border x:Name="bg_disabled" Opacity="0" 
+                                Background="{StaticResource DisableBackgroundColor}" 
+                                BorderThickness="0" CornerRadius="0"  
+                                BorderBrush="{StaticResource TextContentColor}"/>
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="16,3,16,3"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -6,19 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
+using TasksManagerClient.Model;
 
 namespace TasksManagerClient.Helpers.ValueConverters
 {
-    class DateTimeToColorConverter : IValueConverter
+    class DateTimeToColorConverter : IMultiValueConverter
     {
         public SolidColorBrush ExpiriedBrush { get; set; }
         public SolidColorBrush ComingBrush { get; set; }
         public SolidColorBrush NotRushBrush { get; set; }
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public SolidColorBrush DefaultBrush { get; set; }
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            DateTime date = (DateTime)value;
+            WorkTaskStates state = (WorkTaskStates)values[1];
+            if (state != WorkTaskStates.Work)
+                return DefaultBrush;
+            DateTime date = (DateTime)values[0];
             Ugrencys u = Utilits.DateTimeToUgrency(date);
-            switch(u)
+            switch (u)
             {
                 case Ugrencys.Expiried:
                     return ExpiriedBrush;
@@ -28,7 +34,7 @@ namespace TasksManagerClient.Helpers.ValueConverters
             return NotRushBrush;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

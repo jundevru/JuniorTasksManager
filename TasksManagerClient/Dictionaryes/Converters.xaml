@@ -14,7 +14,8 @@
     <local:DateTimeToColorConverter x:Key="DateTimeToColorConverter" x:Shared="False"
                                      ComingBrush="{StaticResource ComingAndWorkColor}"
                                      ExpiriedBrush="{StaticResource ExpiriedAndCancelColor}"
-                                     NotRushBrush="{StaticResource NotRushAndCompletteColor}"/>
+                                     NotRushBrush="{StaticResource NotRushAndCompletteColor}"
+                                     DefaultBrush="White"/>
     <local:SplitCommentConverter x:Key="SplitCommentConverter" x:Shared="False"/>
 
 </ResourceDictionary>

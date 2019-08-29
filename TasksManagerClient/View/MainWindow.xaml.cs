@@ -26,5 +26,10 @@ namespace TasksManagerClient.View
             ViewModel.MainWindowViewModel vm = new ViewModel.MainWindowViewModel();
             this.DataContext = vm;
         }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

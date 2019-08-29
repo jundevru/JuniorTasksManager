@@ -35,9 +35,9 @@ namespace TasksManagerClient.Helpers
         public static Ugrencys DateTimeToUgrency(DateTime date)
         {
             int days = (date - DateTime.Now).Days;
-            if (days <= 1)
+            if (days < 0)
                 return Ugrencys.Expiried;
-            if (days > 1 && days > 2)
+            if (days == 1)
                 return Ugrencys.Coming;
             return Ugrencys.NotRush;
         }

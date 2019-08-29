@@ -2,12 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
 
-    <SolidColorBrush x:Key="LeftBackgroundColor" Color="#FF948FFF"/>
-    <SolidColorBrush x:Key="RightBackgroundColor" Color="#CCC"/>
-    <SolidColorBrush x:Key="TopBackgroundColor" Color="#FF948FFF"/>
-    <SolidColorBrush x:Key="DisableBackgroundColor" Color="Gray"/>
+    <SolidColorBrush x:Key="LeftBackgroundColor" Color="#0570C2"/>
+    <SolidColorBrush x:Key="RightBackgroundColor" Color="#959B9F"/>
+    <SolidColorBrush x:Key="TopBackgroundColor" Color="#045A9D"/>
+    <SolidColorBrush x:Key="DisableBackgroundColor" Color="#6B7B87"/>
 
-    <SolidColorBrush x:Key="TextContentColor" Color="#222"/>
+    <SolidColorBrush x:Key="TextContentColor" Color="White"/>
+    <SolidColorBrush x:Key="TextContentColorBlack" Color="#222"/>
     <SolidColorBrush x:Key="ImagesBorderColor" Color="#333"/>
     <SolidColorBrush x:Key="ImagesFillColor" Color="#555"/>
     <SolidColorBrush x:Key="InfoBorderFillColor" Color="#FFADAAF9"/>

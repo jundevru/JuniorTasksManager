@@ -46,6 +46,35 @@ namespace TasksManagerClient.ViewModel
             }
         }
 
+
+        private int expiriedCount;
+        /// <summary>
+        /// Просрочка
+        /// </summary>
+        public int ExpiriedCount
+        {
+            get { return expiriedCount; }
+            set
+            {
+                expiriedCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int comingCount;
+        /// <summary>
+        /// Почти просрочка
+        /// </summary>
+        public int ComingCount
+        {
+            get { return comingCount; }
+            set
+            {
+                comingCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
         #region ICommands
         /// <summary>
         /// Новая задача
@@ -133,14 +162,17 @@ namespace TasksManagerClient.ViewModel
 
         public void UpdatePropertyes()
         {
+            //MessageBox.Show((DateTime.Now - DateTime.Parse("01.09.2019")).Days.ToString());
             try
             {
                 DB.TaskDataBase.Instance.WorkTasks.Load();
-                List<WorkTask> tasks = DB.TaskDataBase.Instance.WorkTasks.Where((t) => (t.User.ID == CurrentUser.Instance.User.ID
-                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null) && t.State == stateFilter)
+                List<WorkTask> tasks = DB.TaskDataBase.Instance.WorkTasks.Where((t) => t.User.ID == CurrentUser.Instance.User.ID
+                || t.Performers.FirstOrDefault(p => p.User.ID == CurrentUser.Instance.User.ID) != null)
                 .Include(t=>t.Performers)   // Загрузка вложенных данных внутри типа WorkTask, в данном случае списка исполнителей. (По умолчанию virtual не грузятся)
                 .ToList();
-                WorkTasks = new ObservableCollection<WorkTask>(tasks);
+                ExpiriedCount = tasks.Aggregate(0, (acc, v) => { return acc + (Utilits.DateTimeToUgrency(v.PeriodOfExecution) == Ugrencys.Expiried && v.State == WorkTaskStates.Work ? 1 : 0); });
+                ComingCount = tasks.Aggregate(0, (acc, v) => { return acc + (Utilits.DateTimeToUgrency(v.PeriodOfExecution) == Ugrencys.Coming && v.State == WorkTaskStates.Work ? 1 : 0); });
+                WorkTasks = new ObservableCollection<WorkTask>(tasks.Where(t=> t.State == stateFilter));
             }
             catch (Exception ex)
             {

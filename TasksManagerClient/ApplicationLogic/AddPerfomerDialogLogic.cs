@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TasksManagerClient.Dialogs;
 using TasksManagerClient.Model;
 using TasksManagerClient.Statics;
@@ -30,25 +31,33 @@ namespace TasksManagerClient.ApplicationLogic
                 if (result)
                 {
                     var user = suvm.SelectedUser;
-                    ResolutionAndDateViewModel rdvm = new ResolutionAndDateViewModel();
-                    rdvm.PerfomerResult += (res) =>
+                    if (currentTask.Performers.FirstOrDefault(p => p.User.ID == user.ID) != null)
                     {
-                        if (res == PageDialogResult.Canceled)
-                            EndEvent?.Invoke(res);
-                        else
+                        MessageBox.Show("Пользователь " + user.FIO + " уже есть в списке исполнителей.");
+                        presenter.ShowPage(suvm);
+                    }
+                    else
+                    {
+                        ResolutionAndDateViewModel rdvm = new ResolutionAndDateViewModel();
+                        rdvm.PerfomerResult += (res) =>
                         {
-                            currentTask.Performers.Add(new Performer()
-                            {
-                                User = user,
-                                Message = rdvm.Message,
-                                PeriodOfExecution = rdvm.Period,
-                                WorkTask = currentTask
-                            });
-                            if (DB.TaskDataBase.Instance.SafeSaveChanges())
+                            if (res == PageDialogResult.Canceled)
                                 EndEvent?.Invoke(res);
-                        }
-                    };
-                    presenter.ShowPage(rdvm);
+                            else
+                            {
+                                currentTask.Performers.Add(new Performer()
+                                {
+                                    User = user,
+                                    Message = rdvm.Message,
+                                    PeriodOfExecution = rdvm.Period,
+                                    WorkTask = currentTask
+                                });
+                                if (DB.TaskDataBase.Instance.SafeSaveChanges())
+                                    EndEvent?.Invoke(res);
+                            }
+                        };
+                        presenter.ShowPage(rdvm);
+                    }
                 }
                 else
                     EndEvent?.Invoke(PageDialogResult.Canceled);
