@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
+
+     <FontFamily x:Key="PtRoot">pack://application:,,,/Fonts/#PT Root UI Web</FontFamily>
+    <FontFamily x:Key="PtSerif">pack://application:,,,/Fonts/#PT Serif</FontFamily>
+</ResourceDictionary>

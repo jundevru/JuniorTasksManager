@@ -16,6 +16,6 @@
     <SolidColorBrush x:Key="ComingAndWorkColor" Color="#FFFFB327"/>
     <SolidColorBrush x:Key="ExpiriedAndCancelColor" Color="#FFEC0000"/>
     <SolidColorBrush x:Key="NotRushAndCompletteColor" Color="#FF00DC00"/>
-
+    <SolidColorBrush x:Key="CancelColor" Color="#6B7B87"/>
 
 </ResourceDictionary>

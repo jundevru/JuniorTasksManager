@@ -13,6 +13,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
+        
+        
         <!-- Верхняя панель -->
         <Grid Grid.Row="0" Height="50">
             <Grid.ColumnDefinitions>
@@ -32,7 +34,6 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"/>
             </WrapPanel>
-
             <!-- Просрочка -->
             <Border Grid.Column="2" 
                     Background="White"
@@ -58,6 +59,7 @@
                                Style="{StaticResource TextBlockBig}"
                                FontWeight="Bold"
                                FontSize="24"
+                               Foreground="{StaticResource TextContentColorBlack}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" 
                                Text="{Binding ExpiriedCount}"/>
@@ -89,11 +91,15 @@
                                HorizontalAlignment="Center"
                                FontWeight="Bold"
                                FontSize="24"
+                               Foreground="{StaticResource TextContentColorBlack}"
                                VerticalAlignment="Center"
                                Text="{Binding ComingCount}"/>
                 </Grid>
             </Border>
         </Grid>
+        
+        
+        
         <!-- Нижняя панель -->
         <WrapPanel Grid.Row="2">
             <Button Content="Новая задача" 
@@ -108,6 +114,9 @@
             <TextBlock Text="Всего задач:"/>
             <TextBlock Text="{Binding Path=WorkTasks.Count}"/>
         </WrapPanel>
+        
+        
+        <!-- Список задач -->
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding WorkTasks}"
                  SelectedItem="{Binding CurrentTask}">
@@ -140,13 +149,44 @@
                                     Width="28"
                                     Height="40"
                                     CornerRadius="0,0,2,2"
+                                    ToolTip="Статус исполнения"
                                     Background="{Binding State, Converter={StaticResource WorkTaskStatesToColorConverter}}">
-                                <ContentControl Margin="2"
+                                <Grid>
+                                    <ContentControl Margin="2"
                                                 Width="22"
                                                 Height="22"
                                                 VerticalAlignment="Bottom"
                                                 Content="{StaticResource IconSettings}"/>
+                                </Grid>
+                                
                             </Border>
+
+                            <!-- Индикатор срочной задачи -->
+                            <Border Grid.Column="1"
+                                    Grid.Row="1"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="16"
+                                    Width="16"
+                                    CornerRadius="7"
+                                    Background="{StaticResource ExpiriedAndCancelColor}"
+                                    Visibility="{Binding Priority, Converter={StaticResource WorkTaskPriorityToVisibilityConverter}}"
+                                    ToolTip="Высокая срочность исполнения">
+                                <Border.Triggers>
+                                    <EventTrigger RoutedEvent="Border.Loaded">
+                                        <EventTrigger.Actions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" AutoReverse="True" RepeatBehavior="Forever">
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.6" Value="Orange"/>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger.Actions>
+                                    </EventTrigger>
+                                </Border.Triggers>
+                            </Border>
+
 
                             <!-- Сообщение -->
                             <TextBlock Grid.Column="2" 

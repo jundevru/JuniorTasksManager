@@ -23,30 +23,43 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Выберите доступность задачи"/>
+        <TextBlock Grid.Row="1" 
+                   Grid.Column="1" 
+                   Text="Выберите доступность задачи"
+                   Style="{StaticResource TextBlockMedium}"/>
         <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Path=NewTask.Access, Converter={StaticResource EnumToCollectionConverter}, Mode=TwoWay}"
                   SelectedValuePath="Value"
                   DisplayMemberPath="Description"
                   SelectedValue="{Binding Path=NewTask.Access}"/>
         
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Выберите приоритет задачи"/>
+        <TextBlock Grid.Row="1" 
+                   Grid.Column="2" 
+                   Text="Выберите приоритет задачи"
+                   Style="{StaticResource TextBlockMedium}"/>
         <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Path=NewTask.Priority, Converter={StaticResource EnumToCollectionConverter}, Mode=TwoWay}"
                   SelectedValuePath="Value"
                   DisplayMemberPath="Description"
                   SelectedValue="{Binding Path=NewTask.Priority}"/>
 
-        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
+        <TextBox Grid.Row="4" 
+                 Grid.Column="1" 
+                 Grid.ColumnSpan="2" 
+                 Margin="2"
+                 FontFamily="{StaticResource PtSerif}"
+                 FontSize="13"
                  TextWrapping="Wrap"
                  Text="{Binding NewTask.Message}"/>
         <DockPanel Grid.Row="5" Grid.Column="2">
             <Button Content="Далее" 
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Right"
-                    Command="{Binding CreateCommand}"/>
+                    Command="{Binding CreateCommand}"
+                    Style="{StaticResource TextButton}"/>
             <Button Content="Назад" 
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Right"
-                    Command="{Binding CancelCreateCommand}"/>
+                    Command="{Binding CancelCreateCommand}"
+                    Style="{StaticResource TextButton}"/>
         </DockPanel>
     </Grid>
 </UserControl>

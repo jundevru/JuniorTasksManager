@@ -10,6 +10,7 @@ using System.Windows.Input;
 using TasksManagerClient.Dialogs;
 using TasksManagerClient.Helpers;
 using TasksManagerClient.Model;
+using TasksManagerClient.Statics;
 
 namespace TasksManagerClient.ViewModel
 {
@@ -61,11 +62,13 @@ namespace TasksManagerClient.ViewModel
             try
             {
                 DB.TaskDataBase.Instance.Users.Load();
-                Users = DB.TaskDataBase.Instance.Users.Local;
+                List<User> users = DB.TaskDataBase.Instance.Users.Where(u => u.Group.ID == CurrentUser.Instance.User.Group.ID)
+                    .Include(u => u.Group).ToList();
+                Users = new ObservableCollection<User>(users);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "ошибка загрузки пользователей");
             }
         }
     }

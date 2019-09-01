@@ -12,35 +12,62 @@
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-
-        <ListBox ItemsSource="{Binding Performers}"
-                 ItemTemplate="{StaticResource TaskPerformetsTemplate}">
-            
-        </ListBox>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Резолюции исполнителям:"
+                       Style="{StaticResource TextBlockMedium}"/>
+            <ListBox Grid.Row="1"                    
+                     ItemsSource="{Binding Performers}"
+                 ItemTemplate="{StaticResource TaskPerformetsTemplate}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            </ListBox>
+        </Grid>
+               
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox Text="{Binding CompletteComent, UpdateSourceTrigger=PropertyChanged}"/>
-            <Grid Grid.Row="1" >
+            <TextBlock Text="Комментарий исполнителя:"
+                       Style="{StaticResource TextBlockMedium}"/>
+            <TextBox Grid.Row="1" 
+                     Margin="2" 
+                     FontFamily="{StaticResource PtSerif}"
+                     FontSize="13"
+                     Text="{Binding CompletteComent, UpdateSourceTrigger=PropertyChanged}"/>
+            <Grid Grid.Row="2" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Исполнено"
-                    Command="{Binding CompletteCommand}"/>
+                <Button Content="Исполнить"
+                        Width="180"
+                        Height="60"
+                        FontSize="20"
+                        Command="{Binding CompletteCommand}"
+                        Style="{StaticResource TextButton}"/>
                 <Button Grid.Column="1" 
-                    Content="Отменить"
-                    Command="{Binding CancelTaskCommand}"/>
+                        Width="180"
+                        Height="60"
+                        FontSize="20"
+                        Content="Отменить"
+                        Command="{Binding CancelTaskCommand}"
+                        Style="{StaticResource TextButton}"/>
             </Grid>
             
         </Grid>
+        
         <DockPanel Grid.Row="2">
         <Button DockPanel.Dock="Right"
                 HorizontalAlignment="Right"
                 Content="Назад"
-                Command="{Binding CancelCommand}"/>
+                Command="{Binding CancelCommand}"
+                Style="{StaticResource TextButton}"/>
         </DockPanel>
     </Grid>
 </UserControl>

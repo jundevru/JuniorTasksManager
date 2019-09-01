@@ -83,6 +83,7 @@
     <Compile Include="Helpers\ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\EnumToCollectionConverter.cs" />
     <Compile Include="Helpers\ValueConverters\SplitCommentConverter.cs" />
+    <Compile Include="Helpers\ValueConverters\WorkTaskPriorityToVisibilityConverter.cs" />
     <Compile Include="Helpers\ValueConverters\WorkTaskStatesToColorConverter.cs" />
     <Compile Include="Model\UserGroup.cs" />
     <Compile Include="Statics\CurrentUser.cs" />
@@ -147,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dictionaryes\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionaryes\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,6 +244,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\PT Root UI Web.ttf" />
+    <Resource Include="Fonts\PT Serif.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

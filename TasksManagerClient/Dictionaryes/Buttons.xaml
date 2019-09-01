@@ -10,6 +10,7 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource PtRoot}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -37,6 +38,7 @@
         <Setter Property="Foreground" Value="{StaticResource TextContentColor}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource PtRoot}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Margin" Value="1"/>

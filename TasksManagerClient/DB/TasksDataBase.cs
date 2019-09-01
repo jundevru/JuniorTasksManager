@@ -17,6 +17,7 @@ namespace TasksManagerClient.DB
             : base(dbName)
         {
             this.Set<WorkTask>().AsNoTracking();
+            this.Set<User>().AsNoTracking();
         }
 
         public DbSet<User> Users { get; set; }

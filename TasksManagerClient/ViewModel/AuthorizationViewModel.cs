@@ -38,7 +38,7 @@ namespace TasksManagerClient.ViewModel
             Model.User user = null;
             try
             {
-                user = DB.TaskDataBase.Instance.Users.ToList().FirstOrDefault((u) => u.Login == Login);
+                user = DB.TaskDataBase.Instance.Users.Include(t=>t.Group).ToList().FirstOrDefault((u) => u.Login == Login);
             }
             catch(Exception ex)
             {

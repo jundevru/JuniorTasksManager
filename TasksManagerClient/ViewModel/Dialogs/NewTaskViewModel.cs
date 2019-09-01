@@ -41,7 +41,7 @@ namespace TasksManagerClient.ViewModel
         {
             NewTask = new WorkTask()
             {
-                Message = "Введите текст задачи",
+                Message = "Введите описание задачи общее для всех исполнителей",
                 Priority = WorkTaskPriority.Normal,
                 Access = WorkTaskAccess.OnlyPerformers,
                 User = CurrentUser.Instance.User,

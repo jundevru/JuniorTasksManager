@@ -10,6 +10,7 @@
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         <Setter Property="Padding" Value="2"></Setter>
         <Setter Property="Margin" Value="3,2,3,2"/>
+        <Setter Property="FontFamily" Value="{StaticResource PtRoot}"/>
     </Style>
     <Style x:Key="TextBlockMedium" TargetType="TextBlock" BasedOn="{StaticResource TextBlockSmall}">
         <Setter Property="FontSize" Value="11"></Setter>
@@ -17,5 +18,70 @@
     <Style x:Key="TextBlockBig" TargetType="TextBlock" BasedOn="{StaticResource TextBlockSmall}">
         <Setter Property="FontSize" Value="13"></Setter>
     </Style>
-    
+
+
+    <Style x:Key="TextBox13" TargetType="TextBox">
+        <Setter Property="Foreground" Value="{StaticResource TextContentColorBlack}"></Setter>
+        <Setter Property="FontSize" Value="13"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+        <Setter Property="FontFamily" Value="{StaticResource PtSerif}"/>
+        <Setter Property="Margin" Value="1"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border 
+                        Background="White"
+                        Name="border"
+                        BorderBrush="{StaticResource LeftBackgroundColor}" 
+                        BorderThickness="2">
+                        <ScrollViewer  x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource TopBackgroundColor}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DisableBackgroundColor}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PasswordTextBox13" TargetType="PasswordBox">
+        <Setter Property="Foreground" Value="{StaticResource TextContentColorBlack}"></Setter>
+        <Setter Property="FontSize" Value="13"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+        <Setter Property="FontFamily" Value="{StaticResource PtSerif}"/>
+        <Setter Property="Margin" Value="1"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border 
+                        Background="White"
+                        Name="border"
+                        BorderBrush="{StaticResource LeftBackgroundColor}" 
+                        BorderThickness="2">
+                        <ScrollViewer  x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource TopBackgroundColor}"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DisableBackgroundColor}"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
 </ResourceDictionary>

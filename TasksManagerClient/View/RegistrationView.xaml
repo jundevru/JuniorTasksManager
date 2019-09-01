@@ -18,22 +18,38 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <TextBlock Text="Логин:"/>
-            <TextBox Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Text="Пароль:"/>
-            <PasswordBox x:Name="passtb"/>
+            <TextBlock Text="Логин:"
+                       Foreground="{StaticResource TextContentColorBlack}"
+                       Style="{StaticResource TextBlockMedium}"/>
+            <TextBox Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBox13}"/>
+            <TextBlock Text="Пароль:"
+                       Foreground="{StaticResource TextContentColorBlack}"
+                       Style="{StaticResource TextBlockMedium}"/>
+            <PasswordBox x:Name="passtb"
+                         Style="{StaticResource PasswordTextBox13}"/>
             <TextBlock Text="ФИО:"/>
-            <TextBox Text="{Binding FIO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Text="Выберите группу:"/>
+            <TextBox Text="{Binding FIO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBox13}"/>
+            <TextBlock Text="Выберите группу:"
+                       Foreground="{StaticResource TextContentColorBlack}"
+                       Style="{StaticResource TextBlockMedium}"/>
             <ComboBox SelectedItem="{Binding SelectedGroup}"
                       ItemsSource="{Binding Groups}"
                       DisplayMemberPath="Name"/>
-            <TextBlock Text="или создайте новую:"/>
-            <TextBox Text="{Binding GroupText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="или создайте новую:"
+                       Foreground="{StaticResource TextContentColorBlack}"
+                       Style="{StaticResource TextBlockMedium}"/>
+            <TextBox Text="{Binding GroupText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource TextBox13}"/>
             
             <TextBlock Text="___" Visibility="Hidden"/>
-            <Button Content="Регистрация" Command="{Binding Registration}" CommandParameter="{Binding ElementName=passtb}"/>
-            <Button Content="Авторизация" Command="{Binding BackCancel}"/>
+            <Button Content="Регистрация" 
+                    Command="{Binding Registration}" CommandParameter="{Binding ElementName=passtb}"
+                    Style="{StaticResource TextButton}"/>
+            <Button Content="Авторизация" 
+                    Command="{Binding BackCancel}"
+                    Style="{StaticResource TextButton}"/>
         </StackPanel>
     </Grid>
 </UserControl>

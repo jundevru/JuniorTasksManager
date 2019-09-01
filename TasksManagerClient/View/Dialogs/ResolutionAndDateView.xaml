@@ -15,13 +15,18 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Текст резолюции исполнителю:"/>
+        <TextBlock Text="Текст резолюции для исполнителя:"
+                   Style="{StaticResource TextBlockMedium}"/>
         <TextBox Grid.Row="1"
+                 Margin="2"
+                 FontFamily="{StaticResource PtSerif}"
+                 FontSize="13"
                  Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap"/>
 
         <TextBlock Grid.Row="2" 
-                   Text="Срок исполлнения:"/>
+                   Text="Срок исполлнения:"
+                   Style="{StaticResource TextBlockMedium}"/>
 
         <DatePicker Grid.Row="3"
                     SelectedDate="{Binding Period}"/>
@@ -30,11 +35,13 @@
             <Button DockPanel.Dock="Right"
                     Content="Готово"
                     HorizontalAlignment="Right"
-                    Command="{Binding CompleteCommand}"/>
+                    Command="{Binding CompleteCommand}"
+                    Style="{StaticResource TextButton}"/>
             <Button DockPanel.Dock="Right"
                     Content="Назад"
                     HorizontalAlignment="Right"
-                    Command="{Binding CancelCommand}"/>
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource TextButton}"/>
         </DockPanel>
     </Grid>
 </UserControl>

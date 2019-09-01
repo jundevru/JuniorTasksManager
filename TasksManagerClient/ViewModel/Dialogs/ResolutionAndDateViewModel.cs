@@ -53,6 +53,7 @@ namespace TasksManagerClient.ViewModel
         public ResolutionAndDateViewModel()
         {
             Period = DateTime.Now;
+            Message = "Введите текст резолюции здесь";
         }
 
         public void UpdatePropertyes()

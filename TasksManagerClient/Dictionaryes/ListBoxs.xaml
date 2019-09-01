@@ -3,28 +3,89 @@
                     xmlns:local="clr-namespace:TasksManagerClient.Dictionaryes">
 
     <DataTemplate x:Key="TaskPerformetsTemplate" >
-        <Border >
+        <Border Background="White"
+                HorizontalAlignment="Stretch"
+                Margin="2">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="100"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0"
+
+                <Border Grid.Column="1" 
+                        Width="18"
+                        Height="26"
+                        ToolTip="Статус исполнения"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"
                         Background="{Binding State, Converter={StaticResource WorkTaskStatesToColorConverter}}">
-                    <TextBlock Text="{Binding State, Converter={StaticResource EnumToDescriptionConverter}}"/>
+                    <Grid>
+                        <ContentControl Margin="2"
+                                        Width="14"
+                                        Height="14"
+                                        VerticalAlignment="Bottom"
+                                        Content="{StaticResource IconSettings}"/>
+                    </Grid>
+
                 </Border>
-                <WrapPanel Grid.Column="1">
-                    <TextBlock Text="Исп:"/>
-                    <TextBlock Text="{Binding User.FIO}"/>
-                </WrapPanel>
-                <TextBlock Grid.Column="2" 
+                
+                <Border Grid.Column="2"
+                        Grid.Row="1"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"                       
+                        Style="{StaticResource InfoBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ContentControl Grid.Column="0" 
+                                        Height="14"
+                                        Width="14"
+                                        Content="{StaticResource IconUserInfo}"/>
+                        <TextBlock Grid.Column="1" 
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource TextBlockSmall}"
+                                   Text="{Binding User.FIO}"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="3" 
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Style="{StaticResource InfoBorder}">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource DateTimeToColorConverter}">
+                            <Binding Path="PeriodOfExecution"/>
+                            <Binding Path="State"/>
+                        </MultiBinding>
+                    </Border.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ContentControl Grid.Column="0" 
+                                        Height="14"
+                                        Width="14"
+                                        Content="{StaticResource IconTimer}"/>
+                        <TextBlock Grid.Column="1" 
+                                   Style="{StaticResource TextBlockSmall}"
+                                   Text="{Binding PeriodOfExecution, Converter={StaticResource DateTimeShortConverter}}"/>
+                    </Grid>
+                </Border>
+
+                <TextBlock Grid.Column="4" 
+                           FontFamily="{StaticResource PtSerif}"
+                           FontSize="12"
+                           TextWrapping="WrapWithOverflow"
+                           Foreground="{StaticResource TextContentColorBlack}"
+                           Style="{StaticResource TextBlockMedium}"
                            Text="{Binding Message, Converter={StaticResource SplitCommentConverter}}"/>
-                <WrapPanel Grid.Column="3">
-                    <TextBlock Text="Срок:"/>
-                    <TextBlock Text="{Binding PeriodOfExecution, Converter={StaticResource DateTimeShortConverter}}"/>
-                </WrapPanel>
                                          
             </Grid>
         </Border>
@@ -50,4 +111,6 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
 </ResourceDictionary>

@@ -10,6 +10,7 @@ using TasksManagerClient.Dialogs;
 using TasksManagerClient.Model;
 using TasksManagerClient.ApplicationLogic;
 using TasksManagerClient.Statics;
+using System.Windows.Media;
 
 namespace TasksManagerClient.ViewModel
 {

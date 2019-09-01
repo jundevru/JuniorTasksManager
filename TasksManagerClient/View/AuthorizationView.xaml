@@ -13,6 +13,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -20,17 +22,40 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Text="Логин:"
+                   Style="{StaticResource TextBlockMedium}"/>
+        <TextBox Grid.Row="2" 
+                 Grid.Column="1" 
+                 Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource TextBox13}"
+                 Margin="1,1,1,8">
             <TextBox.InputBindings>
                 <KeyBinding Command="{Binding Authorize}" CommandParameter="{Binding ElementName=passtb}" Key="Enter"/>
             </TextBox.InputBindings>
         </TextBox>
-        <PasswordBox x:Name="passtb" Grid.Row="2" Grid.Column="1">
+        <TextBlock Grid.Row="3"
+                   Grid.Column="1"
+                   Text="Пароль:"
+                   Style="{StaticResource TextBlockMedium}"/>
+        <PasswordBox x:Name="passtb" 
+                     Grid.Row="4" 
+                     Grid.Column="1"
+                     Margin="1,1,1,12"
+                     Style="{StaticResource PasswordTextBox13}">
             <PasswordBox.InputBindings>
                 <KeyBinding Command="{Binding Authorize}" CommandParameter="{Binding ElementName=passtb}" Key="Enter"/>
             </PasswordBox.InputBindings>
         </PasswordBox>
-        <Button Grid.Row="3" Grid.Column="1" Content="Войти" Command="{Binding Authorize}" CommandParameter="{Binding ElementName=passtb}"/>
-        <Button Grid.Row="4" Grid.Column="1" Content="Регистрация" Command="{Binding Registration}"/>
+        <Button Grid.Row="5" 
+                Grid.Column="1" 
+                Content="Войти" 
+                Command="{Binding Authorize}" CommandParameter="{Binding ElementName=passtb}"
+                Style="{StaticResource TextButton}"/>
+        <Button Grid.Row="6" 
+                Grid.Column="1" 
+                Content="Регистрация" Command="{Binding Registration}"
+                Style="{StaticResource TextButton}"/>
     </Grid>
 </UserControl>
